@@ -29,7 +29,7 @@ public class WorkOrderFromExcelGenerator
     public WorkOrderFromExcelGenerator(IWebHostEnvironment environment, string templatePath = "C:\\Users\\User\\Downloads\\MfgDocs.Api\\MfgDocs.Api\\wwwroot\\Assets\\Templates\\FORMULA SHEET WITH CONSTANT.xlsx")
     {
         _environment = environment;
-        _templatePath = environment.WebRootPath + @"Assets\Templates\FORMULA SHEET WITH CONSTANT.xlsx"; //templatePath;
+        _templatePath = Path.Combine(_environment.WebRootPath, "Assets", "Templates", "FORMULA SHEET WITH CONSTANT.xlsx"); //templatePath;
     }
      public byte[] GenerateWorkOrderPdf(WorkOrderRequest4 orders)
         {
