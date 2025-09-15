@@ -11,3 +11,61 @@
 # Datasource local storage ignored files
 /dataSources/
 /dataSources.local.xml
+
+
+# General .NET build artifacts
+bin/
+obj/
+
+# NuGet Packages
+packages/
+*.nupkg
+
+# Rider IDE specific files
+.idea/
+*.suo
+*.sln.docstates
+
+# User-specific files
+*.user
+*.userosscache
+*.sln.ide
+
+# Build output
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+build/
+TestResults/
+
+# Logs and temp files
+*.log
+*.cache
+*.lock.json
+
+# Visual Studio temporary files (may overlap with Rider but kept for completeness)
+_Resharper*/
+*.csproj.user
+*.resharper
+*.resharper.user
+
+# Environment-specific files
+appsettings*.json
+secrets.json
+
+# Runtime-generated files
+*.dbmdl
+Generated_Files/
+
+# JetBrains Rider run configurations
+.idea/runConfigurations/
+
+# MacOS-specific files (if using cross-platform)
+.DS_Store
+
+# Docker-related (if applicable)
+docker-compose.override.yml
+
+# Test-related
+coverage/
