@@ -1,0 +1,480 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MFG Precast Work Order</title>
+    <!--<link href= "http: //fonts.googleapis.com/css?family =Open+Sans:300,400,600,700"" rel="" stylesheet" />-->
+    <style>
+        body {
+            font-family: serif;
+            margin: 0;
+            padding: 20px;
+            background: white;
+        }
+
+        .form-container {
+            border: 2px solid black;
+            width: 8.5in;
+            height: 11in;
+            margin: 0 auto;
+            background: white;
+            position: relative;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+        }
+
+        .middle {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 5px solid black;
+        }
+
+        .company-info {
+            flex: 1;
+        }
+
+        .company-logo {
+            color: dimgrey;
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 15px;
+            margin-left: 15px;
+        }
+        /*
+        .company-details {
+            font-size: 10px;
+            line-height: 1.3;
+            color: #333;
+        }*/
+
+        .work-order-section {
+            width: 200px;
+            text-align: center;
+        }
+
+        .box-section {
+            width: 200px;
+            text-align: center;
+        }
+
+        .work-order-title {
+            color: grey;
+            padding: 8px;
+            font-weight: bold;
+            font-size: 22.5px;
+        }
+
+        .order-date {
+            background: #d89795;
+            color: white;
+            padding: 8px;
+            font-weight: bold;
+            font-size: 10px;
+        }
+
+        .date-section {
+            background: #e8e8e8;
+            padding: 5px;
+            font-size: 11px;
+            text-align: right;
+        }
+
+        .order-details {
+            background: #b8cce5;
+            padding: 8px;
+            text-align: center;
+        }
+
+        .purchase-order {
+            font-size: 11px;
+            margin-bottom: 3px;
+        }
+
+        .order-number {
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .company-name {
+            background: #e8e8e8;
+            padding: 3px;
+            font-size: 11px;
+            margin-bottom: 3px;
+        }
+
+        .legacy-text {
+            font-size: 10px;
+        }
+
+        .contact-section {
+            background: #b8cce5;
+            padding: 5px;
+            text-align: center;
+            font-size: 10px;
+        }
+
+        .info-row {
+            display: flex;
+            border-bottom: 1px solid black;
+        }
+
+        .info-left {
+            width: 60%;
+            border-right: 1px solid black;
+            padding: 5px 10px;
+        }
+
+        .info-right {
+            width: 40%;
+            padding: 5px 10px;
+        }
+
+        .field-header {
+            background: #d0d0d0;
+            font-weight: bold;
+            font-size: 10px;
+            padding: 2px 5px;
+            margin-bottom: 2px;
+        }
+
+        .field-content {
+            font-size: 11px;
+            line-height: 1.2;
+            background-color: #f2f2f2;
+        }
+
+        .table-container {
+            margin-top: 0;
+        }
+
+        .description-header {
+            background: #e8e8e8;
+            text-align: center;
+            padding: 8px;
+            font-weight: bold;
+            font-size: 12px;
+            border-bottom: 1px solid black;
+        }
+
+        .table-headers {
+            display: flex;
+            background: #e8e8e8;
+            border-bottom: 1px solid black;
+            font-size: 9px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .col-qty {
+            width: 70px;
+        }
+
+        .col-power {
+            width: 130px;
+        }
+
+        .col-width {
+            width: 70px;
+        }
+
+        .col-length {
+            width: 70px;
+        }
+
+        .col-finished {
+            width: 110px;
+        }
+
+        .col-color {
+            width: 230px;
+        }
+
+        .col-type {
+            width: 90px;
+        }
+
+        .col-area {
+            width: 30px;
+        }
+
+        .col-weight {
+            width: 30px;
+        }
+
+        .table-headers > div {
+            padding: 5px 2px;
+            border-right: 1px solid black;
+        }
+
+            .table-headers > div:last-child {
+                border-right: none;
+            }
+
+        .table-row {
+            display: flex;
+            border-bottom: 1px solid #ccc;
+            font-size: 10px;
+            min-height: 25px;
+            align-items: center;
+        }
+
+            .table-row > div {
+                padding: 3px 2px;
+                border-right: 1px solid #ccc;
+                text-align: center;
+            }
+
+                .table-row > div:last-child {
+                    border-right: none;
+                }
+
+        .lot-number {
+            font-weight: bold;
+            background: #f5f5f5;
+        }
+
+        .red-text {
+            color: red;
+        }
+
+        .bottom-section {
+            position: absolute;
+            bottom: 20px;
+            left: 10px;
+            right: 10px;
+        }
+
+        .notes-section {
+            display: flex;
+            border-top: 1px solid black;
+            border-bottom: 1px solid black;
+        }
+
+        .notes-label {
+            background: #e8e8e8;
+            padding: 5px 10px;
+            font-weight: bold;
+            font-size: 10px;
+            border-right: 1px solid black;
+            width: 80px;
+        }
+
+        .notes-content {
+            padding: 5px 10px;
+            font-size: 11px;
+            flex: 1;
+            color: red;
+            font-weight: bold;
+        }
+
+        .delivery-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            font-size: 11px;
+        }
+
+        .total-weight {
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .company-name {
+            color: #e74c3c;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .company-details {
+            font-size: 10px;
+            line-height: 1.3;
+            color: black;
+        }
+
+        .company-section {
+            width: 50%;
+            padding: 8px;
+        }
+
+        .logo-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .house-icon {
+            width: 18px;
+            height: 12px;
+            background: #e74c3c;
+            margin-right: 5px;
+            position: relative;
+        }
+
+            .house-icon::before {
+                content: '';
+                position: absolute;
+                top: -6px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 0;
+                height: 0;
+                border-left: 9px solid transparent;
+                border-right: 9px solid transparent;
+                border-bottom: 8px solid #e74c3c;
+            }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        
+        <div class="header">
+            <div class="company-section">
+                <div class="logo-row">
+                    <div class="house-icon"></div>
+                    <div class="company-name">MFG PRECAST</div>
+                </div>
+                <div class="company-details">
+                    PO Box 76874, Mississauga<br>
+                    Burlington, ON L7T 4M0<br>
+                    Phone: (905) 632-214, (905) 588-1110<br>
+                    Email: info@mfgprecast.com<br>
+                                              <a href="https://www.mfgprecast.com">www.mfgprecast.com</a>
+                </div>
+            </div>
+            <div class="work-order-section">
+                <div class="work-order-title">WORK ORDER</div>
+                <div class="order-date">ORDER DATE</div>
+                <div class="date-section">
+                    24-Jun-2025
+                </div>
+                 
+                <div class="field-header" style="margin-top: 20px; background: #b8cce5;">PURCHASE ORDER</div>
+                <div class="field-content">BL 43478</div>
+            
+
+            </div>
+        </div>
+
+        <div class="middle">
+            <div class="work-order-section">
+                <div class="field-header">BUILDER / SITE / CITY</div>
+                <div class="field-content">
+                    Bethany Homes<br>
+                    LAKEHAVEN<br>
+                    MILTON
+                </div>
+            </div>
+            <div class="work-order-section">
+                <div class="field-header">BLK NO.</div>
+                <div class="field-content"></div>
+                <div class="field-header" style="margin-top: 20px;">LOT NO.</div>
+                <div class="field-content">66, 67, 71, 75</div>
+            </div>
+
+
+            <div class="work-order-section">
+
+                <div class="field-header" style="background: #b8cce5;">COMPANY</div>
+                <div class="field-content">LEGACY</div> 
+                <div class="field-header" style="margin-top: 20px; background: #b8cce5;">CONTACT</div>
+                <div class="field-content">Aldino</div>
+
+            </div>
+        </div>
+
+        <div class="table-container">
+            <div class="description-header">DESCRIPTION</div>
+
+            <div class="table-headers">
+                <div class="col-qty">QTY</div>
+                <div class="col-power">POWER SIZE<br>L x W</div>
+                <div class="col-width">WIDTH</div>
+                <div class="col-length">LENGTH</div>
+                <div class="col-finished">FINISHED SIZE<br>COLOR</div>
+                <div class="col-color">TYPE</div>
+                <!--<div class="col-type">TYPE</div>-->
+                <div class="col-area">AREA<br>(SQ.M)</div>
+                <div class="col-weight">WEIGHT<br>(LBS)</div>
+            </div>
+
+            <div class="table-row">
+                <div class="col-qty lot-number">LOT 68<br>1<br><span class="red-text">1</span></div>
+                <div class="col-power">(24 X 30)<br><span class="red-text">(34 X 60)</span></div>
+                <div class="col-width">21<br><span class="red-text">31</span></div>
+                <div class="col-length">28<br><span class="red-text">66</span></div>
+                <div class="col-finished">NEW WHITE<br><span class="red-text">NEW WHITE</span></div>
+                <div class="col-color">SMOOTH FACE<br><span class="red-text">SMOOTH FACE</span></div>
+                <!--<div class="col-type"></div>-->
+                <div class="col-area">720<br><span class="red-text">952</span></div>
+                <div class="col-weight">134<br><span class="red-text">199</span></div>
+            </div>
+
+            <div class="table-row">
+                <div class="col-qty lot-number">LOT 63<br>1</div>
+                <div class="col-power">(26 X 26)</div>
+                <div class="col-width">23</div>
+                <div class="col-length">23</div>
+                <div class="col-finished">GRAY</div>
+                <div class="col-color">SMOOTH FACE</div>
+                <!--<div class="col-type"></div>-->
+                <div class="col-area">676</div>
+                <div class="col-weight">121</div>
+            </div>
+
+            <div class="table-row">
+                <div class="col-qty lot-number">LOT 31<br>1<br>1<br>1</div>
+                <div class="col-power">(24 X 24)<br>(26 X 100)<br>(32 X 151.5)</div>
+                <div class="col-width">23<br>23<br>31</div>
+                <div class="col-length">23<br>100<br>150</div>
+                <div class="col-finished">GRAY<br>GRAY<br>GRAY</div>
+                <div class="col-color">ROCK FACE 2L 1S<br>SMOOTH FACE BUTT<br>ROCK FACE BUTT</div>
+                <!--<div class="col-type"></div>-->
+                <div class="col-area">576<br>2,652<br>1,818</div>
+                <div class="col-weight">121<br>559<br>381</div>
+            </div>
+
+            <div class="table-row">
+                <div class="col-qty lot-number">LOT 35<br>1<br>1</div>
+                <div class="col-power">(24 X 29.5)<br>(32 X 49.5)</div>
+                <div class="col-width">23<br>31</div>
+                <div class="col-length">28<br>48</div>
+                <div class="col-finished">GRAY<br>GRAY</div>
+                <div class="col-color">ROCK FACE<br>ROCK FACE</div>
+                <!--<div class="col-type"></div>-->
+                <div class="col-area">708<br>594</div>
+                <div class="col-weight">148<br>123</div>
+            </div>
+
+            <!-- Empty rows to fill space -->
+            <div class="table-row" style="height: 100px;"><div class="col-qty"></div><div class="col-power"></div><div class="col-width"></div><div class="col-length"></div><div class="col-finished"></div><div class="col-color"></div><div class="col-type"></div><div class="col-area"></div><div class="col-weight"></div></div>
+            <div class="table-row" style="height: 100px;"><div class="col-qty"></div><div class="col-power"></div><div class="col-width"></div><div class="col-length"></div><div class="col-finished"></div><div class="col-color"></div><div class="col-type"></div><div class="col-area"></div><div class="col-weight"></div></div>
+            <div class="table-row" style="height: 100px;"><div class="col-qty"></div><div class="col-power"></div><div class="col-width"></div><div class="col-length"></div><div class="col-finished"></div><div class="col-color"></div><div class="col-type"></div><div class="col-area"></div><div class="col-weight"></div></div>
+        </div>
+
+        <div class="bottom-section">
+            <div class="notes-section">
+                <div class="notes-label">NOTES:</div>
+                <div class="notes-content">NEED BRICK TIES</div>
+            </div>
+
+            <div class="delivery-section">
+                <div>EXPECTED DELIVERY DATE(S) BEFORE:</div>
+                <div class="total-weight">TOTAL WEIGHT:</div>
+                <div style="font-weight: bold;">1,764</div>
+            </div>
+
+            <div style="text-align: center; font-size: 11px; margin-top: 5px;">
+                08 Jul 2025 (Tuesday)
+            </div>
+        </div>
+    </div>
+</body>
+</html>
