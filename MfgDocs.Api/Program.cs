@@ -138,6 +138,47 @@ app.MapGet("/api/wkOrderplan", async (WorkOrderFromExcelGenerator generator) =>
 
     }
 });
+
+app.MapGet("/api/wkOrderplan-excel", async (WorkOrderFromExcelGenerator generator) =>
+{
+   
+    try
+    {
+        var sampleRequest = new WorkOrderRequest4
+        {
+            OrderDate = "24-Jun-2025",
+            PurchaseOrder = "BL-45678",
+            Company = "LEGACY",
+            Contact = "Steph",
+            Builder = "Mattamy Homes",
+            Site = "LAKEHAVEN",
+            City = "MILTON",
+            BlkNo = "12,23,12,12",
+            LotNo = "68, 63, 31, 35",
+            Items = new List<Order>()
+     {
+    new Order { LotName = "Lot A", Quantity = 10, FinishedLength = 22, FinishedWidth = 6, Color = "OLD WHITE",   Type = "ROCK FACE" },
+    new Order { LotName = "Lot A", Quantity = 5,  FinishedLength = 20, FinishedWidth = 5, Color = "GRAY",  Type = "ROCK FACE 2S" },
+    new Order { LotName = "Lot C", Quantity = 8,  FinishedLength = 18, FinishedWidth = 4, Color = "NEW WHITE",  Type = "ROCK FACE 1L,2S" },
+
+    new Order { LotName = "Lot D", Quantity = 12, FinishedLength = 25, FinishedWidth = 7, Color = "NEW WHITE",   Type = "ROCK FACE 2L" },
+    new Order { LotName = "Lot B", Quantity = 6,  FinishedLength = 23, FinishedWidth = 6, Color = "OLD WHITE", Type = "ROCK FACE 2L,1S" },
+    new Order { LotName = "Lot D", Quantity = 4,  FinishedLength = 19, FinishedWidth = 5, Color = "GRAY",  Type = "SMOOTH FACE" }
+    }
+        };
+
+        //var output = generator.GenerateWorkOrderExcel(sampleRequest, $"wk_{Guid.NewGuid()}.xlsx");
+        var excelBytes = generator.GenerateWorkOrderExcel(sampleRequest);
+        Console.WriteLine($"PDF generated successfully:");
+        return Results.File(excelBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "SampleWorkOrder.xlsx");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Error: {ex.Message}");
+        return Results.File([], "application/pdf", "SamplePourplan.pdf");
+
+    }
+});
 var settings = app.Services.GetRequiredService<IOptions<DocumentGenerationSettings>>().Value;
 Directory.CreateDirectory(settings.TempPath);
 Directory.CreateDirectory(settings.PuppeteerSettings.CachePath);
