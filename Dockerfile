@@ -20,9 +20,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libfontconfig1 \
     libx11-dev \
     fonts-liberation \
+    ttf-mscorefonts-installer \
     && rm -rf /var/lib/apt/lists/*
 
-# Crucial step: Rebuild the font cache
+# Rebuild the font cache
 RUN fc-cache -f -v
 
 # Copy the published application
