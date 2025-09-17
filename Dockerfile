@@ -13,8 +13,7 @@ WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
 
-# Install the correct native dependencies for FreeSpire.XLS and SkiaSharp.
-# The `fonts-liberation` package is crucial for resolving the "Cannot found font" error.
+# Install essential dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libc6-dev \
     libgdiplus \
@@ -23,11 +22,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     fonts-liberation \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy the published application from the build stage
+# Crucial step: Rebuild the font cache
+RUN fc-cache -f -v
+
+# Copy the published application
 COPY --from=build /app/publish .
 
-# Set the environment variable to ensure the app listens on the correct port.
-# This is crucial for Heroku.
+# Set the environment variable for Heroku
 ENV ASPNETCORE_URLS=http://*:$PORT
 
 ENTRYPOINT ["dotnet", "MfgDocs.Api.dll"]
