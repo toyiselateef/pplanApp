@@ -4,7 +4,8 @@ using MfgDocs.Api.Services.Generators;
 using MfgDocs.Api.Services.Others; 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using Microsoft.OpenApi.Models; 
+using Microsoft.OpenApi.Models;
+using QuestPDF.Drawing;
 using Serilog; 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -45,6 +46,14 @@ builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo { Title = "Pouring Plan API", Version = "v1" });
 });
+
+// Register custom fonts
+FontManager.RegisterFont(File.OpenRead(Path.Combine("wwwroot", "Assets", "Fonts", "Arial.ttf")));
+FontManager.RegisterFont(File.OpenRead(Path.Combine("wwwroot", "Assets", "Fonts", "Roboto-Regular.ttf")));
+
+// For QuestPDF default font
+//QuestPDF.Settings.DefaultFont = "Arial"; 
+
 
 var app = builder.Build();
 

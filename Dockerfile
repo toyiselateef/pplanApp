@@ -1,31 +1,32 @@
-﻿# Stage 1: Build the application
+﻿FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+#USER $APP_UID
+# Install dependencies for FreeSpire.XLS 
+RUN apt-get update && apt-get install -y \
+    libgdiplus \
+    libc6-dev \
+    libx11-dev \
+    fontconfig \
+    && rm -rf /var/lib/apt/lists/*
+
+    
+WORKDIR /app
+EXPOSE 8080
+EXPOSE 8081
+
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["MfgDocs.Api/MfgDocs.Api.csproj", "MfgDocs.Api/"]
 RUN dotnet restore "MfgDocs.Api/MfgDocs.Api.csproj"
 COPY . .
 WORKDIR "/src/MfgDocs.Api"
-RUN dotnet publish "./MfgDocs.Api.csproj" -c Release -o /app/publish --no-restore
+RUN dotnet build "./MfgDocs.Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
-# Stage 2: Create the final production image
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
+FROM build AS publish
+ARG BUILD_CONFIGURATION=Release
+RUN dotnet publish "./MfgDocs.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+
+FROM base AS final
 WORKDIR /app
-EXPOSE 8080
-EXPOSE 8081
-
-# Install essential dependencies, excluding the problematic font installer
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    libc6-dev \
-    libgdiplus \
-    libfontconfig1 \
-    libx11-dev \
-    fonts-liberation \
-    wget \
-    unzip \
-    cabextract \
-    xfonts-utils \
-    && rm -rf /var/lib/apt/lists/*
-
-# Manually install the Microsoft Core Fonts
-# This section downloads the fonts directly and extracts them.
-RUN mkdir -p /usr/share/fonts/truetype
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "MfgDocs.Api.dll"]

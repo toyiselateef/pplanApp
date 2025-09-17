@@ -37,4 +37,8 @@
     <Content Include=".github\workflows\deploy.yml" />
   </ItemGroup>
 
+<ItemGroup>
+  <Content Include="wwwroot/Assets/Fonts/*.ttf" CopyToOutputDirectory="Always" />
+</ItemGroup>
+
 </Project>
