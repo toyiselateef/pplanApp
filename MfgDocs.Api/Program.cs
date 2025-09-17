@@ -47,8 +47,7 @@ builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo { Title = "Pouring Plan API", Version = "v1" });
 });
-string fontPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Assets", "Fonts", "Roboto-Regular.ttf");
-
+ 
 // Example with Spire.PDF
  
 // Register custom fonts
