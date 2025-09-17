@@ -139,6 +139,24 @@ app.MapGet("/api/wkOrderplan", async (WorkOrderFromExcelGenerator generator) =>
     }
 });
 
+app.MapGet("/api/wkOrderplan-actual", async ([FromBody]WorkOrderRequest4 sampleRequest, WorkOrderFromExcelGenerator generator) =>
+{
+   
+    try
+    { 
+        //var output = generator.GenerateWorkOrderExcel(sampleRequest, $"wk_{Guid.NewGuid()}.xlsx");
+        var pdfBytes = generator.GenerateWorkOrderPdf(sampleRequest);
+        Console.WriteLine($"PDF generated successfully:");
+        return Results.File(pdfBytes, "application/pdf", "SampleWorkOrder.pdf");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Error: {ex.Message}");
+        return Results.File([], "application/pdf", "SamplePourplan.pdf");
+
+    }
+});
+
 app.MapGet("/api/wkOrderplan-excel", async (WorkOrderFromExcelGenerator generator) =>
 {
    
