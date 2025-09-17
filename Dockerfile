@@ -4,6 +4,7 @@
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libc6 \
     libgdiplus \
+    libc6-dev  \
     libx11-dev \
     libharfbuzz0b \
     libfreetype6 \

@@ -132,7 +132,7 @@ public class WorkOrderFromExcelGenerator
     }
 
 
-    public byte[] GenerateWorkOrderPdf(WorkOrderRequest4 orders)
+    public byte[] GenerateWorkOrderPdf500(WorkOrderRequest4 orders)
     {
         // ... (Your existing code to populate the Excel workbook) ...
         using var workbook = new XLWorkbook(_templatePath);
@@ -189,7 +189,7 @@ public class WorkOrderFromExcelGenerator
        
     }
 
-    public byte[] GenerateWorkOrderPdf200(WorkOrderRequest4 orders)
+    public byte[] GenerateWorkOrderPdf(WorkOrderRequest4 orders)
     {
         using var workbook = new XLWorkbook(_templatePath);
         var sheet = workbook.Worksheet("WORK ORDER");
