@@ -13,8 +13,8 @@ WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
 
-# Add the 'contrib' repository to access non-free packages like ttf-mscorefonts-installer
-RUN echo "deb http://deb.debian.org/debian/ bookworm main contrib" >> /etc/apt/sources.list.d/sources.list
+# Modify the existing sources.list to include the 'contrib' component
+RUN sed -i 's/main/main contrib/g' /etc/apt/sources.list
 
 # Install essential dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
