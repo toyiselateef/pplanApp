@@ -1,0 +1,237 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\User\\Downloads\\MfgDocs.Api\\MfgDocs.Api\\wwwroot\\Assets\\Fonts\\ARIAL.TTF",
+      "PackagePath": "staticwebassets\\Assets\\Fonts\\ARIAL.TTF"
+    },
+    {
+      "Id": "C:\\Users\\User\\Downloads\\MfgDocs.Api\\MfgDocs.Api\\wwwroot\\Assets\\Fonts\\ARIALBD 1.TTF",
+      "PackagePath": "staticwebassets\\Assets\\Fonts\\ARIALBD 1.TTF"
+    },
+    {
+      "Id": "C:\\Users\\User\\Downloads\\MfgDocs.Api\\MfgDocs.Api\\wwwroot\\Assets\\Fonts\\ARIALBD.TTF",
+      "PackagePath": "staticwebassets\\Assets\\Fonts\\ARIALBD.TTF"
+    },
+    {
+      "Id": "C:\\Users\\User\\Downloads\\MfgDocs.Api\\MfgDocs.Api\\wwwroot\\Assets\\Fonts\\ARIALBI 1.TTF",
+      "PackagePath": "staticwebassets\\Assets\\Fonts\\ARIALBI 1.TTF"
+    },
+    {
+      "Id": "C:\\Users\\User\\Downloads\\MfgDocs.Api\\MfgDocs.Api\\wwwroot\\Assets\\Fonts\\ARIALBI.TTF",
+      "PackagePath": "staticwebassets\\Assets\\Fonts\\ARIALBI.TTF"
+    },
+    {
+      "Id": "C:\\Users\\User\\Downloads\\MfgDocs.Api\\MfgDocs.Api\\wwwroot\\Assets\\Fonts\\ARIALBLACKITALIC.TTF",
+      "PackagePath": "staticwebassets\\Assets\\Fonts\\ARIALBLACKITALIC.TTF"
+    },
+    {
+      "Id": "C:\\Users\\User\\Downloads\\MfgDocs.Api\\MfgDocs.Api\\wwwroot\\Assets\\Fonts\\ARIALI 1.TTF",
+      "PackagePath": "staticwebassets\\Assets\\Fonts\\ARIALI 1.TTF"
+    },
+    {
+      "Id": "C:\\Users\\User\\Downloads\\MfgDocs.Api\\MfgDocs.Api\\wwwroot\\Assets\\Fonts\\ARIALI.TTF",
+      "PackagePath": "staticwebassets\\Assets\\Fonts\\ARIALI.TTF"
+    },
+    {
+      "Id": "C:\\Users\\User\\Downloads\\MfgDocs.Api\\MfgDocs.Api\\wwwroot\\Assets\\Fonts\\ARIALLGT.TTF",
+      "PackagePath": "staticwebassets\\Assets\\Fonts\\ARIALLGT.TTF"
+    },
+    {
+      "Id": "C:\\Users\\User\\Downloads\\MfgDocs.Api\\MfgDocs.Api\\wwwroot\\Assets\\Fonts\\ARIALLGTITL.TTF",
+      "PackagePath": "staticwebassets\\Assets\\Fonts\\ARIALLGTITL.TTF"
+    },
+    {
+      "Id": "C:\\Users\\User\\Downloads\\MfgDocs.Api\\MfgDocs.Api\\wwwroot\\Assets\\Fonts\\ARIALN.TTF",
+      "PackagePath": "staticwebassets\\Assets\\Fonts\\ARIALN.TTF"
+    },
+    {
+      "Id": "C:\\Users\\User\\Downloads\\MfgDocs.Api\\MfgDocs.Api\\wwwroot\\Assets\\Fonts\\ARIALNB.TTF",
+      "PackagePath": "staticwebassets\\Assets\\Fonts\\ARIALNB.TTF"
+    },
+    {
+      "Id": "C:\\Users\\User\\Downloads\\MfgDocs.Api\\MfgDocs.Api\\wwwroot\\Assets\\Fonts\\ARIALNBI.TTF",
+      "PackagePath": "staticwebassets\\Assets\\Fonts\\ARIALNBI.TTF"
+    },
+    {
+      "Id": "C:\\Users\\User\\Downloads\\MfgDocs.Api\\MfgDocs.Api\\wwwroot\\Assets\\Fonts\\ARIALNI.TTF",
+      "PackagePath": "staticwebassets\\Assets\\Fonts\\ARIALNI.TTF"
+    },
+    {
+      "Id": "C:\\Users\\User\\Downloads\\MfgDocs.Api\\MfgDocs.Api\\wwwroot\\Assets\\Fonts\\ARIBLK.TTF",
+      "PackagePath": "staticwebassets\\Assets\\Fonts\\ARIBLK.TTF"
+    },
+    {
+      "Id": "C:\\Users\\User\\Downloads\\MfgDocs.Api\\MfgDocs.Api\\wwwroot\\Assets\\Fonts\\ArialCE.ttf",
+      "PackagePath": "staticwebassets\\Assets\\Fonts\\ArialCE.ttf"
+    },
+    {
+      "Id": "C:\\Users\\User\\Downloads\\MfgDocs.Api\\MfgDocs.Api\\wwwroot\\Assets\\Fonts\\ArialCEBoldItalic.ttf",
+      "PackagePath": "staticwebassets\\Assets\\Fonts\\ArialCEBoldItalic.ttf"
+    },
+    {
+      "Id": "C:\\Users\\User\\Downloads\\MfgDocs.Api\\MfgDocs.Api\\wwwroot\\Assets\\Fonts\\ArialCEItalic.ttf",
+      "PackagePath": "staticwebassets\\Assets\\Fonts\\ArialCEItalic.ttf"
+    },
+    {
+      "Id": "C:\\Users\\User\\Downloads\\MfgDocs.Api\\MfgDocs.Api\\wwwroot\\Assets\\Fonts\\ArialCEMTBlack.ttf",
+      "PackagePath": "staticwebassets\\Assets\\Fonts\\ArialCEMTBlack.ttf"
+    },
+    {
+      "Id": "C:\\Users\\User\\Downloads\\MfgDocs.Api\\MfgDocs.Api\\wwwroot\\Assets\\Fonts\\ArialMdm.ttf",
+      "PackagePath": "staticwebassets\\Assets\\Fonts\\ArialMdm.ttf"
+    },
+    {
+      "Id": "C:\\Users\\User\\Downloads\\MfgDocs.Api\\MfgDocs.Api\\wwwroot\\Assets\\Fonts\\ArialMdmItl.ttf",
+      "PackagePath": "staticwebassets\\Assets\\Fonts\\ArialMdmItl.ttf"
+    },
+    {
+      "Id": "C:\\Users\\User\\Downloads\\MfgDocs.Api\\MfgDocs.Api\\wwwroot\\Assets\\Fonts\\Lato-Black.ttf",
+      "PackagePath": "staticwebassets\\Assets\\Fonts\\Lato-Black.ttf"
+    },
+    {
+      "Id": "C:\\Users\\User\\Downloads\\MfgDocs.Api\\MfgDocs.Api\\wwwroot\\Assets\\Fonts\\Lato-BlackItalic.ttf",
+      "PackagePath": "staticwebassets\\Assets\\Fonts\\Lato-BlackItalic.ttf"
+    },
+    {
+      "Id": "C:\\Users\\User\\Downloads\\MfgDocs.Api\\MfgDocs.Api\\wwwroot\\Assets\\Fonts\\Lato-Bold.ttf",
+      "PackagePath": "staticwebassets\\Assets\\Fonts\\Lato-Bold.ttf"
+    },
+    {
+      "Id": "C:\\Users\\User\\Downloads\\MfgDocs.Api\\MfgDocs.Api\\wwwroot\\Assets\\Fonts\\Lato-BoldItalic.ttf",
+      "PackagePath": "staticwebassets\\Assets\\Fonts\\Lato-BoldItalic.ttf"
+    },
+    {
+      "Id": "C:\\Users\\User\\Downloads\\MfgDocs.Api\\MfgDocs.Api\\wwwroot\\Assets\\Fonts\\Lato-ExtraBold.ttf",
+      "PackagePath": "staticwebassets\\Assets\\Fonts\\Lato-ExtraBold.ttf"
+    },
+    {
+      "Id": "C:\\Users\\User\\Downloads\\MfgDocs.Api\\MfgDocs.Api\\wwwroot\\Assets\\Fonts\\Lato-ExtraBoldItalic.ttf",
+      "PackagePath": "staticwebassets\\Assets\\Fonts\\Lato-ExtraBoldItalic.ttf"
+    },
+    {
+      "Id": "C:\\Users\\User\\Downloads\\MfgDocs.Api\\MfgDocs.Api\\wwwroot\\Assets\\Fonts\\Lato-ExtraLight.ttf",
+      "PackagePath": "staticwebassets\\Assets\\Fonts\\Lato-ExtraLight.ttf"
+    },
+    {
+      "Id": "C:\\Users\\User\\Downloads\\MfgDocs.Api\\MfgDocs.Api\\wwwroot\\Assets\\Fonts\\Lato-ExtraLightItalic.ttf",
+      "PackagePath": "staticwebassets\\Assets\\Fonts\\Lato-ExtraLightItalic.ttf"
+    },
+    {
+      "Id": "C:\\Users\\User\\Downloads\\MfgDocs.Api\\MfgDocs.Api\\wwwroot\\Assets\\Fonts\\Lato-Italic.ttf",
+      "PackagePath": "staticwebassets\\Assets\\Fonts\\Lato-Italic.ttf"
+    },
+    {
+      "Id": "C:\\Users\\User\\Downloads\\MfgDocs.Api\\MfgDocs.Api\\wwwroot\\Assets\\Fonts\\Lato-Light.ttf",
+      "PackagePath": "staticwebassets\\Assets\\Fonts\\Lato-Light.ttf"
+    },
+    {
+      "Id": "C:\\Users\\User\\Downloads\\MfgDocs.Api\\MfgDocs.Api\\wwwroot\\Assets\\Fonts\\Lato-LightItalic.ttf",
+      "PackagePath": "staticwebassets\\Assets\\Fonts\\Lato-LightItalic.ttf"
+    },
+    {
+      "Id": "C:\\Users\\User\\Downloads\\MfgDocs.Api\\MfgDocs.Api\\wwwroot\\Assets\\Fonts\\Lato-Medium.ttf",
+      "PackagePath": "staticwebassets\\Assets\\Fonts\\Lato-Medium.ttf"
+    },
+    {
+      "Id": "C:\\Users\\User\\Downloads\\MfgDocs.Api\\MfgDocs.Api\\wwwroot\\Assets\\Fonts\\Lato-MediumItalic.ttf",
+      "PackagePath": "staticwebassets\\Assets\\Fonts\\Lato-MediumItalic.ttf"
+    },
+    {
+      "Id": "C:\\Users\\User\\Downloads\\MfgDocs.Api\\MfgDocs.Api\\wwwroot\\Assets\\Fonts\\Lato-Regular.ttf",
+      "PackagePath": "staticwebassets\\Assets\\Fonts\\Lato-Regular.ttf"
+    },
+    {
+      "Id": "C:\\Users\\User\\Downloads\\MfgDocs.Api\\MfgDocs.Api\\wwwroot\\Assets\\Fonts\\Lato-SemiBold.ttf",
+      "PackagePath": "staticwebassets\\Assets\\Fonts\\Lato-SemiBold.ttf"
+    },
+    {
+      "Id": "C:\\Users\\User\\Downloads\\MfgDocs.Api\\MfgDocs.Api\\wwwroot\\Assets\\Fonts\\Lato-SemiBoldItalic.ttf",
+      "PackagePath": "staticwebassets\\Assets\\Fonts\\Lato-SemiBoldItalic.ttf"
+    },
+    {
+      "Id": "C:\\Users\\User\\Downloads\\MfgDocs.Api\\MfgDocs.Api\\wwwroot\\Assets\\Fonts\\Lato-Thin.ttf",
+      "PackagePath": "staticwebassets\\Assets\\Fonts\\Lato-Thin.ttf"
+    },
+    {
+      "Id": "C:\\Users\\User\\Downloads\\MfgDocs.Api\\MfgDocs.Api\\wwwroot\\Assets\\Fonts\\Lato-ThinItalic.ttf",
+      "PackagePath": "staticwebassets\\Assets\\Fonts\\Lato-ThinItalic.ttf"
+    },
+    {
+      "Id": "C:\\Users\\User\\Downloads\\MfgDocs.Api\\MfgDocs.Api\\wwwroot\\Assets\\Fonts\\OFL.txt",
+      "PackagePath": "staticwebassets\\Assets\\Fonts\\OFL.txt"
+    },
+    {
+      "Id": "C:\\Users\\User\\Downloads\\MfgDocs.Api\\MfgDocs.Api\\wwwroot\\Assets\\Fonts\\Roboto-Black.ttf",
+      "PackagePath": "staticwebassets\\Assets\\Fonts\\Roboto-Black.ttf"
+    },
+    {
+      "Id": "C:\\Users\\User\\Downloads\\MfgDocs.Api\\MfgDocs.Api\\wwwroot\\Assets\\Fonts\\Roboto-BlackItalic.ttf",
+      "PackagePath": "staticwebassets\\Assets\\Fonts\\Roboto-BlackItalic.ttf"
+    },
+    {
+      "Id": "C:\\Users\\User\\Downloads\\MfgDocs.Api\\MfgDocs.Api\\wwwroot\\Assets\\Fonts\\Roboto-Bold.ttf",
+      "PackagePath": "staticwebassets\\Assets\\Fonts\\Roboto-Bold.ttf"
+    },
+    {
+      "Id": "C:\\Users\\User\\Downloads\\MfgDocs.Api\\MfgDocs.Api\\wwwroot\\Assets\\Fonts\\Roboto-BoldItalic.ttf",
+      "PackagePath": "staticwebassets\\Assets\\Fonts\\Roboto-BoldItalic.ttf"
+    },
+    {
+      "Id": "C:\\Users\\User\\Downloads\\MfgDocs.Api\\MfgDocs.Api\\wwwroot\\Assets\\Fonts\\Roboto-Italic.ttf",
+      "PackagePath": "staticwebassets\\Assets\\Fonts\\Roboto-Italic.ttf"
+    },
+    {
+      "Id": "C:\\Users\\User\\Downloads\\MfgDocs.Api\\MfgDocs.Api\\wwwroot\\Assets\\Fonts\\Roboto-Light.ttf",
+      "PackagePath": "staticwebassets\\Assets\\Fonts\\Roboto-Light.ttf"
+    },
+    {
+      "Id": "C:\\Users\\User\\Downloads\\MfgDocs.Api\\MfgDocs.Api\\wwwroot\\Assets\\Fonts\\Roboto-LightItalic.ttf",
+      "PackagePath": "staticwebassets\\Assets\\Fonts\\Roboto-LightItalic.ttf"
+    },
+    {
+      "Id": "C:\\Users\\User\\Downloads\\MfgDocs.Api\\MfgDocs.Api\\wwwroot\\Assets\\Fonts\\Roboto-Medium.ttf",
+      "PackagePath": "staticwebassets\\Assets\\Fonts\\Roboto-Medium.ttf"
+    },
+    {
+      "Id": "C:\\Users\\User\\Downloads\\MfgDocs.Api\\MfgDocs.Api\\wwwroot\\Assets\\Fonts\\Roboto-MediumItalic.ttf",
+      "PackagePath": "staticwebassets\\Assets\\Fonts\\Roboto-MediumItalic.ttf"
+    },
+    {
+      "Id": "C:\\Users\\User\\Downloads\\MfgDocs.Api\\MfgDocs.Api\\wwwroot\\Assets\\Fonts\\Roboto-Regular.ttf",
+      "PackagePath": "staticwebassets\\Assets\\Fonts\\Roboto-Regular.ttf"
+    },
+    {
+      "Id": "C:\\Users\\User\\Downloads\\MfgDocs.Api\\MfgDocs.Api\\wwwroot\\Assets\\Fonts\\Roboto-Thin.ttf",
+      "PackagePath": "staticwebassets\\Assets\\Fonts\\Roboto-Thin.ttf"
+    },
+    {
+      "Id": "C:\\Users\\User\\Downloads\\MfgDocs.Api\\MfgDocs.Api\\wwwroot\\Assets\\Fonts\\Roboto-ThinItalic.ttf",
+      "PackagePath": "staticwebassets\\Assets\\Fonts\\Roboto-ThinItalic.ttf"
+    },
+    {
+      "Id": "C:\\Users\\User\\Downloads\\MfgDocs.Api\\MfgDocs.Api\\wwwroot\\Assets\\Fonts\\arialceb.ttf",
+      "PackagePath": "staticwebassets\\Assets\\Fonts\\arialceb.ttf"
+    },
+    {
+      "Id": "C:\\Users\\User\\Downloads\\MfgDocs.Api\\MfgDocs.Api\\wwwroot\\Assets\\Templates\\FORMULA SHEET WITH CONSTANT.xlsx",
+      "PackagePath": "staticwebassets\\Assets\\Templates\\FORMULA SHEET WITH CONSTANT.xlsx"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.MfgDocs.Api.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.MfgDocs.Api.props",
+      "PackagePath": "build\\MfgDocs.Api.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.MfgDocs.Api.props",
+      "PackagePath": "buildMultiTargeting\\MfgDocs.Api.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.MfgDocs.Api.props",
+      "PackagePath": "buildTransitive\\MfgDocs.Api.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using GemBox.Spreadsheet;
 using MfgDocs.Api.Extensions;
 using Newtonsoft.Json;
 using QuestPDF.Helpers;
@@ -39,12 +40,25 @@ public class WorkOrderFromExcelGenerator
         _logger = logger;
         _templatePath = Path.Combine(_environment.WebRootPath, "Assets", "Templates",
             "FORMULA SHEET WITH CONSTANT.xlsx"); //templatePath;
+        SpreadsheetInfo.SetLicense("FREE-LIMITED-KEY");
     }
-    
-      public byte[] GenerateWorkOrderPdf100(WorkOrderRequest4 orders)
+
+    public static byte[] ConvertExcelToPdf(byte[] excelBytes)
+    {
+        var pdfSaveOptions = new PdfSaveOptions();
+        using var inputStream = new MemoryStream(excelBytes);
+        var workbook = ExcelFile.Load(inputStream);
+
+        using var outputStream = new MemoryStream();
+        workbook.Save(outputStream, pdfSaveOptions);
+
+        return outputStream.ToArray();
+    }
+
+    public byte[] GenerateWorkOrderPdf100(WorkOrderRequest4 orders)
     {
         FontInstaller.EnsureFontsAvailable();
-        
+
         using var workbook = new XLWorkbook(_templatePath);
         var sheet = workbook.Worksheet("WORK ORDER");
 
@@ -117,8 +131,65 @@ public class WorkOrderFromExcelGenerator
         return pdfStream.ToArray();
     }
 
-      
-      public byte[] GenerateWorkOrderPdf(WorkOrderRequest4 orders)
+
+    public byte[] GenerateWorkOrderPdf(WorkOrderRequest4 orders)
+    {
+        // ... (Your existing code to populate the Excel workbook) ...
+        using var workbook = new XLWorkbook(_templatePath);
+        var sheet = workbook.Worksheet("WORK ORDER");
+
+        // Corrected the cell assignment for BlockName
+        sheet.Cell(12, 10).Value = orders.BlkNo;
+
+        // Populating other cells...
+        sheet.Cell(9, 2).Value = orders.Builder;
+        sheet.Cell(10, 2).Value = orders.Site;
+        sheet.Cell(11, 2).Value = orders.City;
+        sheet.Cell(3, 13).Value = orders.OrderDate;
+        sheet.Cell(6, 13).Value = orders.PurchaseOrder;
+        sheet.Cell(9, 13).Value = orders.Company;
+        sheet.Cell(12, 13).Value = orders.Contact;
+
+        int currentRow = 19;
+        var groupedOrders = orders.Items.GroupBy(o => o.LotName);
+
+        foreach (var group in groupedOrders)
+        {
+            sheet.Cell(currentRow, 2).Value = $"Lot: {group.Key}";
+            currentRow++;
+
+            foreach (var order in group)
+            {
+                sheet.Row(currentRow).InsertRowsBelow(1);
+                sheet.Cell(currentRow, 2).Value = order.Quantity;
+                sheet.Cell(currentRow, 7).Value = order.FinishedLength;
+                sheet.Cell(currentRow, 8).Value = "X";
+                sheet.Cell(currentRow, 9).Value = order.FinishedWidth;
+                sheet.Cell(currentRow, 10).Value = order.Color;
+                sheet.Cell(currentRow, 11).Value = order.Type;
+                sheet.Cell(currentRow, 3).FormulaA1 =
+                    $"IF(OR(K{currentRow}=\"ROCK FACE\",K{currentRow}=\"ROCK FACE BUTT\",K{currentRow}=\"ROCK FACE 2L,1S\",K{currentRow}=\"ROCK FACE 2L\",K{currentRow}=\"ROCK FACE 1L,2S\"),EVEN(G{currentRow}+1),EVEN(G{currentRow}+2))";
+                sheet.Cell(currentRow, 4).Value = "X";
+                sheet.Cell(currentRow, 5).FormulaA1 =
+                    $"IF(I{currentRow}<>G{currentRow},IF(OR(K{currentRow}=\"ROCK FACE\",K{currentRow}=\"ROCK FACE BUTT\",K{currentRow}=\"ROCK FACE 2L,1S\",K{currentRow}=\"ROCK FACE 2L\",K{currentRow}=\"ROCK FACE 1L,2S\"),I{currentRow}+1.5,I{currentRow}+2),C{currentRow})";
+                sheet.Cell(currentRow, 12).FormulaA1 = $"=B{currentRow}*C{currentRow}*E{currentRow}";
+                sheet.Cell(currentRow, 13).FormulaA1 = $"=(G{currentRow}+1)*(I{currentRow}+1)*(B{currentRow}*0.21)";
+                currentRow++;
+            }
+        }
+
+        // Save Excel to memory
+        using (var excelStream = new MemoryStream())
+        {
+            workbook.SaveAs(excelStream);
+            excelStream.Position = 0;
+            return ConvertExcelToPdf( excelStream.ToArray());
+        }
+
+       
+    }
+
+    public byte[] GenerateWorkOrderPdf200(WorkOrderRequest4 orders)
     {
         using var workbook = new XLWorkbook(_templatePath);
         var sheet = workbook.Worksheet("WORK ORDER");
@@ -193,19 +264,18 @@ public class WorkOrderFromExcelGenerator
         return pdfStream.ToArray();
     }
 
-    
+
     private void LogSystemInfo()
     {
-        
         try
         {
             _logger.LogInformation($"Current working directory: {Directory.GetCurrentDirectory()}");
             _logger.LogInformation($"Temp path: {Path.GetTempPath()}");
-        
+
             // Check PATH environment variable
             string pathEnv = Environment.GetEnvironmentVariable("PATH");
             _logger.LogInformation($"PATH environment variable: {pathEnv}");
-        
+
             // List /usr/bin directory
             if (Directory.Exists("/usr/bin"))
             {
@@ -365,7 +435,7 @@ public class WorkOrderFromExcelGenerator
     //     }
     // }
     //
-    
+
     public byte[] GenerateWorkOrderPdf4(WorkOrderRequest4 orders)
     {
         LogSystemInfo();
@@ -445,7 +515,7 @@ public class WorkOrderFromExcelGenerator
 
             // Find LibreOffice executable
             string libreOfficePath = "/usr/lib/libreoffice/program/soffice";
-        
+
             var psi = new ProcessStartInfo
             {
                 FileName = libreOfficePath,
@@ -461,11 +531,11 @@ public class WorkOrderFromExcelGenerator
             psi.EnvironmentVariables["HOME"] = "/tmp";
 
             _logger.LogInformation($"Starting LibreOffice process: {libreOfficePath}");
-        
+
             using (var process = new Process { StartInfo = psi })
             {
                 process.Start();
-            
+
                 string stdout = process.StandardOutput.ReadToEnd();
                 string stderr = process.StandardError.ReadToEnd();
                 process.WaitForExit();
@@ -478,7 +548,8 @@ public class WorkOrderFromExcelGenerator
 
                 if (process.ExitCode != 0)
                 {
-                    throw new Exception($"LibreOffice process failed with exit code {process.ExitCode}. Stderr: {stderr}");
+                    throw new Exception(
+                        $"LibreOffice process failed with exit code {process.ExitCode}. Stderr: {stderr}");
                 }
 
                 if (!File.Exists(pdfPath))
@@ -503,12 +574,14 @@ public class WorkOrderFromExcelGenerator
             }
         }
     }
+
     private string FindLibreOfficeExecutable()
     {
-        string[] possiblePaths = {
-            "/usr/lib/libreoffice/program/soffice",  // The actual executable
-            "/usr/bin/libreoffice",                  // Symlink
-            "/usr/bin/soffice",                      // Another symlink
+        string[] possiblePaths =
+        {
+            "/usr/lib/libreoffice/program/soffice", // The actual executable
+            "/usr/bin/libreoffice", // Symlink
+            "/usr/bin/soffice", // Another symlink
             "libreoffice",
             "soffice"
         };
@@ -541,10 +614,10 @@ public class WorkOrderFromExcelGenerator
                             CreateNoWindow = true
                         }
                     };
-                
+
                     testProcess.Start();
                     testProcess.WaitForExit(5000); // 5 second timeout
-                
+
                     if (testProcess.ExitCode == 0)
                     {
                         _logger.LogInformation($"Found LibreOffice at: {path}");
@@ -561,82 +634,85 @@ public class WorkOrderFromExcelGenerator
         _logger.LogError("LibreOffice executable not found in any expected location");
         return null;
     }
-    private string FindLibreOfficeExecutableDepeeee()
-{
-    string[] possiblePaths = {
-        "/usr/bin/libreoffice",
-        "/usr/bin/libreoffice7.4",
-        "/usr/bin/libreoffice6.4",
-        "/usr/bin/soffice",
-        "/opt/libreoffice/program/soffice",
-        "/snap/libreoffice/current/bin/libreoffice",
-        "libreoffice",
-        "soffice"
-    };
 
-    foreach (string path in possiblePaths)
+    private string FindLibreOfficeExecutableDepeeee()
     {
+        string[] possiblePaths =
+        {
+            "/usr/bin/libreoffice",
+            "/usr/bin/libreoffice7.4",
+            "/usr/bin/libreoffice6.4",
+            "/usr/bin/soffice",
+            "/opt/libreoffice/program/soffice",
+            "/snap/libreoffice/current/bin/libreoffice",
+            "libreoffice",
+            "soffice"
+        };
+
+        foreach (string path in possiblePaths)
+        {
+            try
+            {
+                if (File.Exists(path))
+                {
+                    _logger.LogInformation($"Found LibreOffice at: {path}");
+                    return path;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogDebug($"Error checking path {path}: {ex.Message}");
+            }
+        }
+
+        // Try using 'which' command to find it
         try
         {
-            if (File.Exists(path))
+            var whichProcess = new Process
             {
-                _logger.LogInformation($"Found LibreOffice at: {path}");
-                return path;
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = "which",
+                    Arguments = "libreoffice",
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true
+                }
+            };
+
+            whichProcess.Start();
+            string result = whichProcess.StandardOutput.ReadToEnd().Trim();
+            whichProcess.WaitForExit();
+
+            if (whichProcess.ExitCode == 0 && !string.IsNullOrEmpty(result))
+            {
+                _logger.LogInformation($"Found LibreOffice using 'which': {result}");
+                return result;
             }
         }
         catch (Exception ex)
         {
-            _logger.LogDebug($"Error checking path {path}: {ex.Message}");
+            _logger.LogDebug($"Error using 'which' command: {ex.Message}");
         }
-    }
 
-    // Try using 'which' command to find it
-    try
-    {
-        var whichProcess = new Process
+        // Log available files for debugging
+        try
         {
-            StartInfo = new ProcessStartInfo
-            {
-                FileName = "which",
-                Arguments = "libreoffice",
-                RedirectStandardOutput = true,
-                UseShellExecute = false,
-                CreateNoWindow = true
-            }
-        };
-        
-        whichProcess.Start();
-        string result = whichProcess.StandardOutput.ReadToEnd().Trim();
-        whichProcess.WaitForExit();
-        
-        if (whichProcess.ExitCode == 0 && !string.IsNullOrEmpty(result))
-        {
-            _logger.LogInformation($"Found LibreOffice using 'which': {result}");
-            return result;
+            var usrBinFiles = Directory.GetFiles("/usr/bin", "*libre*")
+                .Concat(Directory.GetFiles("/usr/bin", "*office*"))
+                .ToList();
+
+            _logger.LogError($"Available office-related files in /usr/bin: {string.Join(", ", usrBinFiles)}");
         }
-    }
-    catch (Exception ex)
-    {
-        _logger.LogDebug($"Error using 'which' command: {ex.Message}");
+        catch (Exception ex)
+        {
+            _logger.LogError($"Could not list /usr/bin directory: {ex.Message}");
+        }
+
+        _logger.LogError("LibreOffice executable not found in any expected location");
+        return null;
     }
 
-    // Log available files for debugging
-    try
-    {
-        var usrBinFiles = Directory.GetFiles("/usr/bin", "*libre*")
-            .Concat(Directory.GetFiles("/usr/bin", "*office*"))
-            .ToList();
-        
-        _logger.LogError($"Available office-related files in /usr/bin: {string.Join(", ", usrBinFiles)}");
-    }
-    catch (Exception ex)
-    {
-        _logger.LogError($"Could not list /usr/bin directory: {ex.Message}");
-    }
-
-    _logger.LogError("LibreOffice executable not found in any expected location");
-    return null;
-}
     private string FindLibreOfficeExecutableDep()
     {
         string[] possiblePaths =
@@ -667,7 +743,7 @@ public class WorkOrderFromExcelGenerator
         return null;
     }
 
-  
+
     public string GenerateWorkOrderExcelDep(WorkOrderRequest4 orders, string outputPath)
     {
         string excelPath = outputPath;

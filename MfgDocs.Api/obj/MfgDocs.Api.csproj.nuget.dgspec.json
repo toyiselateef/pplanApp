@@ -55,6 +55,10 @@
               "target": "Package",
               "version": "[14.2.0, )"
             },
+            "GemBox.Spreadsheet": {
+              "target": "Package",
+              "version": "[2025.9.107, )"
+            },
             "Microsoft.Office.Interop.Excel": {
               "target": "Package",
               "version": "[15.0.4795.1001, )"

@@ -12,6 +12,7 @@
     <PackageReference Include="ClosedXML" Version="0.105.0" />
     <PackageReference Include="EPPlus.Core" Version="1.5.4" />
     <PackageReference Include="FreeSpire.XLS" Version="14.2.0" />
+    <PackageReference Include="GemBox.Spreadsheet" Version="2025.9.107" />
     <PackageReference Include="itext7.pdfhtml" Version="6.2.0" />
     <PackageReference Include="iTextSharp" Version="5.5.13.4" />
     <PackageReference Include="Microsoft.Office.Interop.Excel" Version="15.0.4795.1001" />
