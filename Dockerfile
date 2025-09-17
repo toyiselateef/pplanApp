@@ -24,7 +24,11 @@ RUN dotnet build "./MfgDocs.Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
 RUN dotnet publish "./MfgDocs.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
-
+# install LibreOffice
+RUN apt-get update && apt-get install -y \
+    libreoffice \
+    && rm -rf /var/lib/apt/lists/* \
+    
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
