@@ -116,16 +116,7 @@ public class WorkOrderFromExcelGenerator
             }
         }
 
-        foreach (var ws in workbook.Worksheets)
-        {
-            ws.Style.Font.FontName = "Calibri";  // set worksheet default
-            ws.Style.Font.FontSize = 10;         // match Excel’s default if needed
-
-            var usedRange = ws.RangeUsed();
-            if (usedRange != null)
-                usedRange.Style.Font.FontName = "Calibri"; // apply to existing cells
-        }
-
+      
 // Optional: ensure consistent layout by freezing column widths
 // e.g., these values should match your Excel template
         sheet.Column(2).Width = 12;  // Quantity
