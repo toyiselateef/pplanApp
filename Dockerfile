@@ -1,41 +1,33 @@
-﻿FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
-WORKDIR /app
-EXPOSE 8080
-EXPOSE 8081
-
+﻿# Stage 1: Build the application
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["MfgDocs.Api/MfgDocs.Api.csproj", "MfgDocs.Api/"]
 RUN dotnet restore "MfgDocs.Api/MfgDocs.Api.csproj"
 COPY . .
 WORKDIR "/src/MfgDocs.Api"
-RUN dotnet build "./MfgDocs.Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet publish "./MfgDocs.Api.csproj" -c Release -o /app/publish --no-restore
 
-FROM build AS publish
-ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./MfgDocs.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
-
-FROM base AS final
+# Stage 2: Create the final production image
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
+EXPOSE 8080
+EXPOSE 8081
 
-# Install all dependencies in the final stage
-RUN apt-get update && apt-get install -y \
-    libgdiplus \
+# Install the correct native dependencies for FreeSpire.XLS and SkiaSharp.
+# The `fonts-liberation` package is crucial for resolving the "Cannot found font" error.
+RUN apt-get update && apt-get install -y --no-install-recommends \
     libc6-dev \
+    libgdiplus \
+    libfontconfig1 \
     libx11-dev \
     fonts-liberation \
-    libreoffice \
     && rm -rf /var/lib/apt/lists/*
 
-# Debug: List what LibreOffice binaries are available
-RUN echo "=== Debugging LibreOffice installation ===" && \
-    which libreoffice || echo "libreoffice not found in PATH" && \
-    ls -la /usr/bin/libre* || echo "No libre* binaries found" && \
-    ls -la /usr/bin/soffice* || echo "No soffice* binaries found" && \
-    find /usr -name "*libre*" -type f 2>/dev/null | head -10 || echo "No libre files found" && \
-    echo "=== End debugging ==="
+# Copy the published application from the build stage
+COPY --from=build /app/publish .
 
-COPY --from=publish /app/publish .
+# Set the environment variable to ensure the app listens on the correct port.
+# This is crucial for Heroku.
+ENV ASPNETCORE_URLS=http://*:$PORT
 
 ENTRYPOINT ["dotnet", "MfgDocs.Api.dll"]
