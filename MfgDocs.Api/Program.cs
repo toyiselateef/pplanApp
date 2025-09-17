@@ -48,8 +48,8 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 // Register custom fonts
-FontManager.RegisterFont(File.OpenRead(Path.Combine("wwwroot", "Assets", "Fonts", "Arial.ttf")));
-FontManager.RegisterFont(File.OpenRead(Path.Combine("wwwroot", "Assets", "Fonts", "Roboto-Regular.ttf")));
+//FontManager.RegisterFont(File.OpenRead(Path.Combine("wwwroot", "Assets", "Fonts", "Arial.ttf")));
+//FontManager.RegisterFont(File.OpenRead(Path.Combine("wwwroot", "Assets", "Fonts", "Roboto-Regular.ttf")));
 
 // For QuestPDF default font
 //QuestPDF.Settings.DefaultFont = "Arial"; 
