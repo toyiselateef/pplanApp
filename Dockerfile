@@ -1,11 +1,11 @@
-﻿# --- Base runtime image ---
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+﻿FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 
-# Install runtime dependencies (fonts, SkiaSharp, FreeSpire, etc.)
+# Install dependencies for FreeSpire.XLS / SkiaSharp (HarfBuzz, FreeType, FontConfig, etc.)
+# Added fonts-crosextra-carlito for Calibri substitute
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libc6 \
     libgdiplus \
-    libc6-dev \
+    libc6-dev  \
     libx11-dev \
     libharfbuzz0b \
     libfreetype6 \
@@ -15,16 +15,17 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     fontconfig \
     fonts-dejavu \
     fonts-liberation \
-    poppler-utils \
+    fonts-crosextra-carlito \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy Calibri TTF fonts from repo into system fonts and refresh cache
-COPY MfgDocs.Api/Assets/Fonts/Calibri /usr/share/fonts/truetype/calibri
-RUN fc-cache -fv
+# Copy font alias config and refresh font cache
+COPY calibri.conf /etc/fonts/conf.d/30-calibri.conf
+RUN fc-cache -f -v
 
 WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
+
 
 # --- Build stage ---
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
