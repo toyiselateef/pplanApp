@@ -3,15 +3,6 @@ WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
 
-# Install dependencies including LibreOffice
-RUN apt-get update && apt-get install -y \
-    libgdiplus \
-    libc6-dev \
-    libx11-dev \
-    fonts-liberation \
-    libreoffice \
-    && rm -rf /var/lib/apt/lists/*
-
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
@@ -27,9 +18,24 @@ RUN dotnet publish "./MfgDocs.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publis
 
 FROM base AS final
 WORKDIR /app
-COPY --from=publish /app/publish .
 
-# Verify LibreOffice installation
-RUN which libreoffice && libreoffice --version
+# Install all dependencies in the final stage
+RUN apt-get update && apt-get install -y \
+    libgdiplus \
+    libc6-dev \
+    libx11-dev \
+    fonts-liberation \
+    libreoffice \
+    && rm -rf /var/lib/apt/lists/*
+
+# Debug: List what LibreOffice binaries are available
+RUN echo "=== Debugging LibreOffice installation ===" && \
+    which libreoffice || echo "libreoffice not found in PATH" && \
+    ls -la /usr/bin/libre* || echo "No libre* binaries found" && \
+    ls -la /usr/bin/soffice* || echo "No soffice* binaries found" && \
+    find /usr -name "*libre*" -type f 2>/dev/null | head -10 || echo "No libre files found" && \
+    echo "=== End debugging ==="
+
+COPY --from=publish /app/publish .
 
 ENTRYPOINT ["dotnet", "MfgDocs.Api.dll"]

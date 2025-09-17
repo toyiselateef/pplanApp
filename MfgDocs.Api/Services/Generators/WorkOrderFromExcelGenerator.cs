@@ -39,9 +39,37 @@ public class WorkOrderFromExcelGenerator
         _templatePath = Path.Combine(_environment.WebRootPath, "Assets", "Templates",
             "FORMULA SHEET WITH CONSTANT.xlsx"); //templatePath;
     }
+    
+    private void LogSystemInfo()
+    {
+        
+        try
+        {
+            _logger.LogInformation($"Current working directory: {Directory.GetCurrentDirectory()}");
+            _logger.LogInformation($"Temp path: {Path.GetTempPath()}");
+        
+            // Check PATH environment variable
+            string pathEnv = Environment.GetEnvironmentVariable("PATH");
+            _logger.LogInformation($"PATH environment variable: {pathEnv}");
+        
+            // List /usr/bin directory
+            if (Directory.Exists("/usr/bin"))
+            {
+                var files = Directory.GetFiles("/usr/bin", "*office*")
+                    .Concat(Directory.GetFiles("/usr/bin", "*libre*"))
+                    .ToList();
+                _logger.LogInformation($"Office-related files in /usr/bin: {string.Join(", ", files)}");
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error logging system info");
+        }
+    }
 
     public byte[] GenerateWorkOrderPdf(WorkOrderRequest4 orders)
     {
+        LogSystemInfo();
         // 1. Create isolated temp folder
         string tempDir = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
         Directory.CreateDirectory(tempDir);
@@ -184,6 +212,82 @@ public class WorkOrderFromExcelGenerator
     }
 
     private string FindLibreOfficeExecutable()
+{
+    string[] possiblePaths = {
+        "/usr/bin/libreoffice",
+        "/usr/bin/libreoffice7.4",
+        "/usr/bin/libreoffice6.4",
+        "/usr/bin/soffice",
+        "/opt/libreoffice/program/soffice",
+        "/snap/libreoffice/current/bin/libreoffice",
+        "libreoffice",
+        "soffice"
+    };
+
+    foreach (string path in possiblePaths)
+    {
+        try
+        {
+            if (File.Exists(path))
+            {
+                _logger.LogInformation($"Found LibreOffice at: {path}");
+                return path;
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogDebug($"Error checking path {path}: {ex.Message}");
+        }
+    }
+
+    // Try using 'which' command to find it
+    try
+    {
+        var whichProcess = new Process
+        {
+            StartInfo = new ProcessStartInfo
+            {
+                FileName = "which",
+                Arguments = "libreoffice",
+                RedirectStandardOutput = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            }
+        };
+        
+        whichProcess.Start();
+        string result = whichProcess.StandardOutput.ReadToEnd().Trim();
+        whichProcess.WaitForExit();
+        
+        if (whichProcess.ExitCode == 0 && !string.IsNullOrEmpty(result))
+        {
+            _logger.LogInformation($"Found LibreOffice using 'which': {result}");
+            return result;
+        }
+    }
+    catch (Exception ex)
+    {
+        _logger.LogDebug($"Error using 'which' command: {ex.Message}");
+    }
+
+    // Log available files for debugging
+    try
+    {
+        var usrBinFiles = Directory.GetFiles("/usr/bin", "*libre*")
+            .Concat(Directory.GetFiles("/usr/bin", "*office*"))
+            .ToList();
+        
+        _logger.LogError($"Available office-related files in /usr/bin: {string.Join(", ", usrBinFiles)}");
+    }
+    catch (Exception ex)
+    {
+        _logger.LogError($"Could not list /usr/bin directory: {ex.Message}");
+    }
+
+    _logger.LogError("LibreOffice executable not found in any expected location");
+    return null;
+}
+    private string FindLibreOfficeExecutableDep()
     {
         string[] possiblePaths =
         {
