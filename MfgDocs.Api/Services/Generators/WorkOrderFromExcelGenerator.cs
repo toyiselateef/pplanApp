@@ -48,7 +48,7 @@ public class WorkOrderFromExcelGenerator
 
         string excelPath = Path.Combine(tempDir, "workorder.xlsx");
         string pdfPath = Path.Combine(tempDir, "workorder.pdf");
-      _logger.LogInformation($"excel:{excelPath}\n pdfPath:{pdfPath} ");
+        _logger.LogInformation($"excel:{excelPath}\n pdfPath:{pdfPath} ");
         try
         {
             // 2. Load template and fill data using ClosedXML
@@ -111,64 +111,107 @@ public class WorkOrderFromExcelGenerator
                     }
                 }
 
+                //   workbook.SaveAs(excelPath);
                 workbook.SaveAs(excelPath);
-                _logger.LogInformation($" saved to excel path:{excelPath}");
-
+                _logger.LogInformation($"saved to excel path:{excelPath}");
             }
 
-            // 3. Run LibreOffice headless to convert Excel -> PDF
-            
+            // Find LibreOffice executable
+            string libreOfficePath = FindLibreOfficeExecutable();
+            if (string.IsNullOrEmpty(libreOfficePath))
+            {
+                throw new Exception("LibreOffice executable not found");
+            }
+
             var psi = new ProcessStartInfo
             {
-                FileName = "libreoffice",
+                FileName = libreOfficePath,
                 Arguments = $"--headless --convert-to pdf --outdir \"{tempDir}\" \"{excelPath}\"",
+                WorkingDirectory = tempDir,
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 UseShellExecute = false,
                 CreateNoWindow = true
             };
-            _logger.LogInformation($"process starting...");
+
+            // Set environment variables
+            psi.EnvironmentVariables["HOME"] = "/tmp";
+            psi.EnvironmentVariables["DISPLAY"] = ":99";
+
+            _logger.LogInformation($"Starting process: {libreOfficePath}");
 
             using (var process = new Process { StartInfo = psi })
             {
                 process.Start();
-                
-                _logger.LogInformation($"process started!");
 
                 string stdout = process.StandardOutput.ReadToEnd();
                 string stderr = process.StandardError.ReadToEnd();
                 process.WaitForExit();
 
-                if (process.ExitCode != 0 || !File.Exists(pdfPath))
+                _logger.LogInformation($"LibreOffice stdout: {stdout}");
+                if (!string.IsNullOrEmpty(stderr))
                 {
-                    _logger.LogError($"error occured. {JsonConvert.SerializeObject(process)} and file existence: {File.Exists(pdfPath)}");
+                    _logger.LogWarning($"LibreOffice stderr: {stderr}");
+                }
 
-                    throw new Exception($"LibreOffice conversion failed. Stdout: {stdout}, Stderr: {stderr}");
+                if (process.ExitCode != 0)
+                {
+                    throw new Exception(
+                        $"LibreOffice process failed with exit code {process.ExitCode}. Stderr: {stderr}");
+                }
+
+                if (!File.Exists(pdfPath))
+                {
+                    throw new Exception($"PDF file was not created at expected path: {pdfPath}");
                 }
             }
 
-            // 4. Load PDF into memory
-            _logger.LogInformation($"loading pdf");
-
+            _logger.LogInformation($"loading pdf from {pdfPath}");
             return File.ReadAllBytes(pdfPath);
         }
         finally
         {
-            // 5. Cleanup temp directory
             try
             {
-                _logger.LogInformation($"deleting temp directory");
-
+                _logger.LogInformation($"deleting temp directory: {tempDir}");
                 Directory.Delete(tempDir, true);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                _logger.LogError(ex, "an error occured:");
-
+                _logger.LogError(ex, "Error deleting temp directory");
             }
         }
     }
 
+    private string FindLibreOfficeExecutable()
+    {
+        string[] possiblePaths =
+        {
+            "/usr/bin/libreoffice",
+            "/usr/bin/libreoffice7.4",
+            "/usr/bin/soffice",
+            "libreoffice"
+        };
+
+        foreach (string path in possiblePaths)
+        {
+            try
+            {
+                if (File.Exists(path))
+                {
+                    _logger.LogInformation($"Found LibreOffice at: {path}");
+                    return path;
+                }
+            }
+            catch
+            {
+                // Continue to next path
+            }
+        }
+
+        _logger.LogError("LibreOffice executable not found in any expected location");
+        return null;
+    }
 
     public byte[] GenerateWorkOrderPdf2(WorkOrderRequest4 orders)
     {
