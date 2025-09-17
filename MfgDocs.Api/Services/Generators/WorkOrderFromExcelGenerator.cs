@@ -41,7 +41,7 @@ public class WorkOrderFromExcelGenerator
             "FORMULA SHEET WITH CONSTANT.xlsx"); //templatePath;
     }
     
-      public byte[] GenerateWorkOrderPdf(WorkOrderRequest4 orders)
+      public byte[] GenerateWorkOrderPdf100(WorkOrderRequest4 orders)
     {
         FontInstaller.EnsureFontsAvailable();
         
@@ -118,7 +118,7 @@ public class WorkOrderFromExcelGenerator
     }
 
       
-      public byte[] GenerateWorkOrderPdf100(WorkOrderRequest4 orders)
+      public byte[] GenerateWorkOrderPdf(WorkOrderRequest4 orders)
     {
         using var workbook = new XLWorkbook(_templatePath);
         var sheet = workbook.Worksheet("WORK ORDER");
