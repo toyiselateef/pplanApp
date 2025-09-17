@@ -1,23 +1,20 @@
 ﻿FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
-#USER $APP_UID
-# Install dependencies for FreeSpire.XLS 
-#RUN apt-get update && apt-get install -y \
-#    libgdiplus \
-#    libc6-dev \
-#    libx11-dev \
-#    fontconfig \
-#    && rm -rf /var/lib/apt/lists/*
 
-RUN apt-get update && apt-get install -y \
+# Install dependencies for GemBox / SkiaSharp (HarfBuzz, FreeType, FontConfig, etc.)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libc6 \
+    libgdiplus \
+    libx11-dev \
     libharfbuzz0b \
     libfreetype6 \
     libfontconfig1 \
-    libc6 \
+    libpangocairo-1.0-0 \
+    libgtk-3-0 \
     fontconfig \
     fonts-dejavu \
     fonts-liberation \
     && rm -rf /var/lib/apt/lists/*
-    
+
 WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
