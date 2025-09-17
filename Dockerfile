@@ -1,7 +1,6 @@
 ﻿FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 
-# Install dependencies for FreeSpire.XLS / SkiaSharp (HarfBuzz, FreeType, FontConfig, etc.)
-# Added fonts-crosextra-carlito for Calibri substitute
+# Install dependencies for GemBox / SkiaSharp (HarfBuzz, FreeType, FontConfig, etc.)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libc6 \
     libgdiplus \
@@ -15,18 +14,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     fontconfig \
     fonts-dejavu \
     fonts-liberation \
-    fonts-crosextra-carlito \
     && rm -rf /var/lib/apt/lists/*
-
-COPY calibri.conf /etc/fonts/conf.d/30-calibri.conf
-RUN fc-cache -f -v
 
 WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
 
-
-# --- Build stage ---
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
@@ -36,12 +29,10 @@ COPY . .
 WORKDIR "/src/MfgDocs.Api"
 RUN dotnet build "./MfgDocs.Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
-# --- Publish stage ---
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
 RUN dotnet publish "./MfgDocs.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
-# --- Final runtime image ---
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
