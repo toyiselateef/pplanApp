@@ -210,8 +210,65 @@ public class WorkOrderFromExcelGenerator
             }
         }
     }
-
     private string FindLibreOfficeExecutable()
+    {
+        string[] possiblePaths = {
+            "/usr/lib/libreoffice/program/soffice",  // The actual executable
+            "/usr/bin/libreoffice",                  // Symlink
+            "/usr/bin/soffice",                      // Another symlink
+            "libreoffice",
+            "soffice"
+        };
+
+        foreach (string path in possiblePaths)
+        {
+            try
+            {
+                // Use File.Exists for absolute paths, or try to execute for relative paths
+                if (path.StartsWith("/"))
+                {
+                    if (File.Exists(path))
+                    {
+                        _logger.LogInformation($"Found LibreOffice at: {path}");
+                        return path;
+                    }
+                }
+                else
+                {
+                    // For relative paths, try executing with --version to test
+                    var testProcess = new Process
+                    {
+                        StartInfo = new ProcessStartInfo
+                        {
+                            FileName = path,
+                            Arguments = "--version",
+                            RedirectStandardOutput = true,
+                            RedirectStandardError = true,
+                            UseShellExecute = false,
+                            CreateNoWindow = true
+                        }
+                    };
+                
+                    testProcess.Start();
+                    testProcess.WaitForExit(5000); // 5 second timeout
+                
+                    if (testProcess.ExitCode == 0)
+                    {
+                        _logger.LogInformation($"Found LibreOffice at: {path}");
+                        return path;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogDebug($"Error checking path {path}: {ex.Message}");
+            }
+        }
+
+        _logger.LogError("LibreOffice executable not found in any expected location");
+        return null;
+    }
+    private string FindLibreOfficeExecutableDepeeee()
 {
     string[] possiblePaths = {
         "/usr/bin/libreoffice",
