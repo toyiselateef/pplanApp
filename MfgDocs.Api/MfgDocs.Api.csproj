@@ -24,10 +24,11 @@
     <PackageReference Include="Serilog.AspNetCore" Version="8.0.1" />
     <PackageReference Include="Serilog.Sinks.Console" Version="5.0.1" />
     <PackageReference Include="SkiaSharp" Version="2.88.9" />
-    <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="2.88.9" />
     <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.88.9" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="8.1.4" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="8.1.4" />
+    <PackageReference Include="System.Security.Cryptography.Xml" Version="10.0.0-rc.1.25451.107" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="10.0.0-rc.1.25451.107" />
   </ItemGroup>
 
   <ItemGroup>

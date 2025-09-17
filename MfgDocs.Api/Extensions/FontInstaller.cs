@@ -14,8 +14,8 @@ public static class FontInstaller
         if (!Directory.Exists(sourceDir))
             return;
 
-       var ddiirr =  Directory.CreateDirectory(targetDir);
-       Console.WriteLine($"ddiiirr::::\n\n" + JsonConvert.SerializeObject(ddiirr));   
+        var ddiirr =  Directory.CreateDirectory(targetDir);
+        Console.WriteLine($"ddiiirr::::\n\n" + JsonConvert.SerializeObject(ddiirr));   
         foreach (var fontFile in Directory.GetFiles(sourceDir, "*.ttf"))
         {
             string targetPath = Path.Combine(targetDir, Path.GetFileName(fontFile));

@@ -1,3 +1,4 @@
+using iText.Kernel.Font;
 using MfgDocs.Api.Models;
 using MfgDocs.Api.Services;
 using MfgDocs.Api.Services.Generators;
@@ -46,7 +47,10 @@ builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo { Title = "Pouring Plan API", Version = "v1" });
 });
+string fontPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Assets", "Fonts", "Roboto-Regular.ttf");
 
+// Example with Spire.PDF
+ 
 // Register custom fonts
 //FontManager.RegisterFont(File.OpenRead(Path.Combine("wwwroot", "Assets", "Fonts", "Arial.ttf")));
 //FontManager.RegisterFont(File.OpenRead(Path.Combine("wwwroot", "Assets", "Fonts", "Roboto-Regular.ttf")));
