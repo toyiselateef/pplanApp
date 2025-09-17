@@ -24,6 +24,8 @@
     <PackageReference Include="Serilog.AspNetCore" Version="8.0.1" />
     <PackageReference Include="Serilog.Sinks.Console" Version="5.0.1" />
     <PackageReference Include="SkiaSharp" Version="2.88.9" />
+    <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="2.88.9" />
+    <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.88.9" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="8.1.4" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="8.1.4" />
   </ItemGroup>

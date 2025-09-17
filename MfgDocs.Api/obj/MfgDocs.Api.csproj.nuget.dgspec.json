@@ -95,6 +95,14 @@
               "target": "Package",
               "version": "[2.88.9, )"
             },
+            "SkiaSharp.NativeAssets.Linux": {
+              "target": "Package",
+              "version": "[2.88.9, )"
+            },
+            "SkiaSharp.NativeAssets.Linux.NoDependencies": {
+              "target": "Package",
+              "version": "[2.88.9, )"
+            },
             "Swashbuckle.AspNetCore.SwaggerGen": {
               "target": "Package",
               "version": "[8.1.4, )"

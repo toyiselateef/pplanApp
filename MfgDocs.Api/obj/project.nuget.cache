@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "297q/Ymf3W0=",
+  "dgSpecHash": "kdQRZwGyWj8=",
   "success": true,
   "projectFilePath": "C:\\Users\\User\\Downloads\\MfgDocs.Api\\MfgDocs.Api\\MfgDocs.Api.csproj",
   "expectedPackageFiles": [
@@ -73,6 +73,8 @@
     "C:\\Users\\User\\.nuget\\packages\\serilog.sinks.file\\5.0.0\\serilog.sinks.file.5.0.0.nupkg.sha512",
     "C:\\Users\\User\\.nuget\\packages\\sixlabors.fonts\\2.0.0\\sixlabors.fonts.2.0.0.nupkg.sha512",
     "C:\\Users\\User\\.nuget\\packages\\skiasharp\\2.88.9\\skiasharp.2.88.9.nupkg.sha512",
+    "C:\\Users\\User\\.nuget\\packages\\skiasharp.nativeassets.linux\\2.88.9\\skiasharp.nativeassets.linux.2.88.9.nupkg.sha512",
+    "C:\\Users\\User\\.nuget\\packages\\skiasharp.nativeassets.linux.nodependencies\\2.88.9\\skiasharp.nativeassets.linux.nodependencies.2.88.9.nupkg.sha512",
     "C:\\Users\\User\\.nuget\\packages\\skiasharp.nativeassets.macos\\2.88.9\\skiasharp.nativeassets.macos.2.88.9.nupkg.sha512",
     "C:\\Users\\User\\.nuget\\packages\\skiasharp.nativeassets.win32\\2.88.9\\skiasharp.nativeassets.win32.2.88.9.nupkg.sha512",
     "C:\\Users\\User\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\8.1.4\\swashbuckle.aspnetcore.swagger.8.1.4.nupkg.sha512",
