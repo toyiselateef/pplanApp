@@ -26,13 +26,15 @@ namespace MfgDocs.Api.Extensions;
 
         public static PdfPCell CreateMergedCell(string text, int colspan, BaseColor backgroundColor, Font font)
         {
-            var cell = new PdfPCell(new Phrase(text, font));
-            cell.Colspan = colspan;
-            cell.BackgroundColor = backgroundColor;
-            cell.HorizontalAlignment = Element.ALIGN_CENTER;
-            cell.VerticalAlignment = Element.ALIGN_MIDDLE;
-            cell.Padding = 5;
-            cell.Border = Rectangle.BOX;
+            var cell = new PdfPCell(new Phrase(text, font))
+            {
+                Colspan = colspan,
+                BackgroundColor = backgroundColor,
+                HorizontalAlignment = Element.ALIGN_CENTER,
+                VerticalAlignment = Element.ALIGN_MIDDLE,
+                Padding = 5,
+                Border = Rectangle.BOX
+            };
             return cell;
         }
     }
