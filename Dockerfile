@@ -13,26 +13,19 @@ WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
 
-# Modify the existing sources.list to include the 'contrib' component
-RUN sed -i 's/main/main contrib/g' /etc/apt/sources.list
-
-# Install essential dependencies
+# Install essential dependencies, excluding the problematic font installer
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libc6-dev \
     libgdiplus \
     libfontconfig1 \
     libx11-dev \
     fonts-liberation \
-    ttf-mscorefonts-installer \
+    wget \
+    unzip \
+    cabextract \
+    xfonts-utils \
     && rm -rf /var/lib/apt/lists/*
 
-# Rebuild the font cache
-RUN fc-cache -f -v
-
-# Copy the published application
-COPY --from=build /app/publish .
-
-# Set the environment variable for Heroku
-ENV ASPNETCORE_URLS=http://*:$PORT
-
-ENTRYPOINT ["dotnet", "MfgDocs.Api.dll"]
+# Manually install the Microsoft Core Fonts
+# This section downloads the fonts directly and extracts them.
+RUN mkdir -p /usr/share/fonts/truetype
