@@ -18,7 +18,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     fonts-crosextra-carlito \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy font alias config and refresh font cache
 COPY calibri.conf /etc/fonts/conf.d/30-calibri.conf
 RUN fc-cache -f -v
 
