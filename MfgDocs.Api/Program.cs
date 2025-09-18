@@ -139,7 +139,7 @@ app.MapGet("/api/wkOrderplan", async (WorkOrderFromExcelGenerator generator) =>
     }
 });
 
-app.MapGet("/api/wkOrderplan-actual", async ([FromBody]WorkOrderRequest4 sampleRequest, WorkOrderFromExcelGenerator generator) =>
+app.MapPost("/api/wkOrderplan-actual", async ([FromBody]WorkOrderRequest4 sampleRequest, WorkOrderFromExcelGenerator generator) =>
 {
    
     try

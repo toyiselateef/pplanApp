@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MfgDocs.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+491dd3b867f51cb275eb68ce5b0a9663827942f9")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f14833a74c71b8d56c44ecb2073c40a1859cccee")]
 [assembly: System.Reflection.AssemblyProductAttribute("MfgDocs.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MfgDocs.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
