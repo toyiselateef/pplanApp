@@ -56,3 +56,28 @@ public  static class Helper
     }
 }
 
+
+public static class BagCalculationRules
+{
+    public static readonly Dictionary<int, int> BagToSquareInch = new Dictionary<int, int>
+    {
+        { 1, 1575 },
+        { 3, 4725 },
+        { 4, 6300 },
+        { 5, 7875 },
+        { 6, 9450 }
+    };
+
+    public static int CalculateRequiredBags(float totalArea)
+    {
+        foreach (var rule in BagToSquareInch.OrderByDescending(x => x.Key))
+        {
+            if (totalArea >= rule.Value)
+            {
+                return rule.Key;
+            }
+        }
+        return totalArea > 0 ? 1 : 0;
+    }
+}
+

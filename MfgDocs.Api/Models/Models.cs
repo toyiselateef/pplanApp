@@ -1,12 +1,32 @@
 using DocumentFormat.OpenXml.EMMA;
 using MfgDocs.Api.Services.Generators;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace MfgDocs.Api.Models;
 
-public enum FinishType { RockFace, SmoothFace }
-public enum RockFaceSides { AllSides, TwoLong, TwoLongOneShort, OneLongOneShort, TwoShort, Butt }
-public enum ColorType { NewWhiteSmooth, Gray, OldWhite }
+public enum FinishType
+{
+    RockFace,
+    SmoothFace
+}
+
+public enum RockFaceSides
+{
+    AllSides,
+    TwoLong,
+    TwoLongOneShort,
+    OneLongOneShort,
+    TwoShort,
+    Butt
+}
+
+public enum ColorType
+{
+    NewWhiteSmooth,
+    Gray,
+    OldWhite
+}
 
 public record Dimension(decimal WidthInches, decimal LengthInches, decimal ThicknessInches = 3);
 
@@ -94,7 +114,6 @@ public class BrandingOptions
 /// <summary>
 /// 
 /// </summary>
-
 public class WorkOrderLineItem
 {
     public int Quantity { get; set; }
@@ -125,15 +144,11 @@ public class WorkOrderData
     public List<WorkOrderLineItem> LineItems { get; set; } = new List<WorkOrderLineItem>();
 }
 
-
 public class ExcelPlanEntry
 {
-    [Required]
-    public DateTime Date { get; set; }
-    [Required]
-    public string Supplier { get; set; }
-    [Required]
-    public string PO { get; set; }
+    [Required] public DateTime Date { get; set; }
+    [Required] public string Supplier { get; set; }
+    [Required] public string PO { get; set; }
     public string Lot { get; set; }
     public string Location { get; set; }
     public List<string> FullOrderLines { get; set; } = new List<string>();
@@ -144,15 +159,13 @@ public class ExcelPlanEntry
 
 public class ExcelPouringPlanRequest
 {
-    [Required, MinLength(1)]
-    public List<ExcelPlanEntry> Entries { get; set; }
+    [Required, MinLength(1)] public List<ExcelPlanEntry> Entries { get; set; }
     public string DayOfWeek { get; set; }
 }
 
 public class MoldDetail
 {
-    [Required]
-    public string Name { get; set; }
+    [Required] public string Name { get; set; }
     public string Size { get; set; }
     public double Length { get; set; }
     public double Height { get; set; }
@@ -170,10 +183,8 @@ public class BagCalculationRow
 
 public class PdfPouringPlanRequest
 {
-    [Required]
-    public string Title { get; set; }
-    [Required, MinLength(1)]
-    public List<MoldDetail> Molds { get; set; }
+    [Required] public string Title { get; set; }
+    [Required, MinLength(1)] public List<MoldDetail> Molds { get; set; }
     public List<BagCalculationRow> BagTable { get; set; } = new List<BagCalculationRow>();
 }
 
@@ -309,7 +320,6 @@ public enum TemplateFormat
     Html,
     Razor,
     Liquid
-
 }
 
 public enum PdfPageFormat
@@ -319,7 +329,6 @@ public enum PdfPageFormat
     A3Portrait,
     A3Landscape
 }
-
 
 public class WorkOrderRequest4
 {
@@ -336,6 +345,23 @@ public class WorkOrderRequest4
     public string Notes { get; set; } = string.Empty;
     public string ExpectedDeliveryDate { get; set; } = string.Empty;
     public int Priority { get; set; }
+}
+
+public class WorkOrderRequest4Dto
+{
+    public string OrderDate { get; set; } = string.Empty;
+    public string PurchaseOrder { get; set; } = string.Empty;
+    public string Company { get; set; } = string.Empty;
+    public string Contact { get; set; } = string.Empty;
+    public string Builder { get; set; } = string.Empty;
+    public string Site { get; set; } = string.Empty;
+    public string City { get; set; } = string.Empty;
+    public string BlkNo { get; set; } = string.Empty;
+    public string LotNo { get; set; } = string.Empty; 
+    public string Notes { get; set; } = string.Empty;
+    public string ExpectedDeliveryDate { get; set; } = string.Empty;
+    public int Priority { get; set; }
+    public string? Id { get; set; }
 }
 
 public class WorkOrderRequest3
@@ -374,7 +400,6 @@ public class PourPlanRequest3
     public List<MoldInfos> Molds { get; set; } = new();
     public PourPlanTable? Table { get; set; }
 }
-
 
 public class MoldInfos
 {
@@ -422,7 +447,6 @@ public class PourPlanDay
     public bool IsHighlighted { get; set; }
 }
 
-
 ////////////
 ///
 public class DocumentGenerationSettings
@@ -459,39 +483,130 @@ public class CorsSettings
 }
 
 public class TableRow
-     {
-         public string MoldSize { get; set; }
-         public int Poured { get; set; }
-         public string PourDate { get; set; }
-         public int TotalPcs { get; set; }
-         public float CubicYards { get; set; }
-         public float TotalArea { get; set; }
-     }
+{
+    public string MoldSize { get; set; }
+    public int Poured { get; set; }
+    public string PouredSize { get; set; }
+    public int NumberOfPcs { get; set; }
+    public float PouredVolume { get; set; }
+    public int PouringPcs { get; set; }
+    public float Poureable { get; set; }
+    public int ExtraMargin { get; set; }
+    public float TotalLengthRequired { get; set; }
+    public float TotalAreaRequired { get; set; }
+    public string Note { get; set; }
+    //
+
+    public string PourDate { get; set; }
+    public int TotalPcs { get; set; }
+    public float CubicYards { get; set; }
+    public float TotalArea { get; set; }
+}
+
+// public class TableRow
+//      {
+//          public string MoldSize { get; set; }
+//          public int Poured { get; set; }
+//          public string PourDate { get; set; }
+//          public int TotalPcs { get; set; }
+//          public float CubicYards { get; set; }
+//          public float TotalArea { get; set; }
+//      }
 public class MoldInfo
-    {
-        public string Name { get; set; }
-        public float MoldWidth { get; set; }
-        public float MoldHeight { get; set; }
-        public List<SectionInfo> Sections { get; set; } = new List<SectionInfo>();
-        public string TotalLengthWithMargin { get; set; }
-        public string PourCategory { get; set; }
-    }
+{
+    public string Name { get; set; }
+    public float MoldWidth { get; set; }
+    public float MoldHeight { get; set; }
+    public List<SectionInfo> Sections { get; set; } = new List<SectionInfo>();
+    public string TotalLengthWithMargin { get; set; }
+    public string PourCategory { get; set; }
+}
 
+public class SectionInfo
+{
+    public float Width { get; set; }
+    public float Height { get; set; }
+    public string Label { get; set; }
+    public string RedLineLabel { get; set; }
+    public bool IsTopSide { get; set; } = true;
+}
 
-     public class SectionInfo
-     {
-         public float Width { get; set; }
-         public float Height { get; set; }
-         public string Label { get; set; }
-         public string RedLineLabel { get; set; }
-         public bool IsTopSide { get; set; } = true;
-     }
 ////
 ///
- public class DataData
-            { 
-                public string pourNumber { get; set; }   
-                public string date { get; set; }   
-                public string color { get; set; }   
-                public List<MoldInfo> molds { get; set; }
-            }
+public class DataData
+{
+    public string pourNumber { get; set; }
+    public string date { get; set; }
+    public string color { get; set; }
+    public List<MoldInfo> molds { get; set; }
+}
+
+public class SharePointListItem
+{
+    [JsonPropertyName("id")] public string Id { get; set; } = string.Empty;
+
+    [JsonPropertyName("fields")] public IDictionary<string, object>? Fields { get; set; } = default;
+
+    [JsonPropertyName("createdDateTime")] public DateTime? CreatedDateTime { get; set; }
+
+    [JsonPropertyName("lastModifiedDateTime")]
+    public DateTime? LastModifiedDateTime { get; set; }
+}
+
+public class CreateListItemRequest
+{
+    public Dictionary<string, object> Fields { get; set; } = new();
+}
+
+public class UpdateListItemRequest
+{
+    public Dictionary<string, object> Fields { get; set; } = new();
+}
+
+
+
+#region DTOs
+
+public class TrackerItemDto
+{
+    public string Id { get; set; }
+    public DateTime PlanDate { get; set; }
+    public string PurchaseOrder { get; set; }
+    public string Company { get; set; }
+    public string LotName { get; set; }
+    public string ProductType { get; set; }
+    public string Dimensions { get; set; }
+    public int FullOrderQuantity { get; set; }
+    public int PlannedQuantity { get; set; }
+    public int ActualPouredQuantity { get; set; }
+    public int RemainingQuantity { get; set; }
+    public string MoldName { get; set; }
+    public string Status { get; set; }
+    public string Color { get; set; }
+    public string PourCategory { get; set; }
+}
+
+public class TrackerUpdateRequest
+{
+    public DateTime PlanDate { get; set; }
+    public string PurchaseOrder { get; set; }
+    public string LotName { get; set; }
+    public int FullOrderQuantity { get; set; }
+    public int PlannedQuantity { get; set; }
+    public int ActualPouredQuantity { get; set; }
+    public string ModifiedBy { get; set; }
+    public string Notes { get; set; }
+}
+
+public class TrackerSummaryDto
+{
+    public int TotalOrders { get; set; }
+    public int TotalItems { get; set; }
+    public int PlannedItems { get; set; }
+    public int CompletedItems { get; set; }
+    public int RemainingItems { get; set; }
+    public double CompletionPercentage { get; set; }
+    public int MoldsUsed { get; set; }
+}
+
+#endregion
