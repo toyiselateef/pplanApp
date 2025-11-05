@@ -90,10 +90,15 @@ builder.Services.AddScoped<GraphServiceClient>(provider =>
     };
     
     var clientSecretCredential = new ClientSecretCredential(
-        config["Sharepoint:TENANT_ID"],
-        config["Sharepoint:CLIENT_ID"],
+            Environment.GetEnvironmentVariable("TENANT_ID_"),
+            Environment.GetEnvironmentVariable("CLIENT_ID_"),
         Environment.GetEnvironmentVariable("CLIENT_"),
         options);
+  // var clientSecretCredential = new ClientSecretCredential(
+  //       config["Sharepoint:TENANT_ID"],
+  //       config["Sharepoint:CLIENT_ID"],
+  //       Environment.GetEnvironmentVariable("CLIENT_"),
+  //       options);
 
     return new GraphServiceClient(clientSecretCredential);
 });

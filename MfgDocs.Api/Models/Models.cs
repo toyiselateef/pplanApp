@@ -610,3 +610,18 @@ public class TrackerSummaryDto
 }
 
 #endregion
+
+public class StandardMold
+{
+    public string Name { get; set; }
+    public double Width { get; set; }
+    public double Length { get; set; }
+    public string PourCategory { get; set; }
+    public List<SlottedItem> TopSideItems { get; set; } = new List<SlottedItem>();
+    public List<SlottedItem> BottomSideItems { get; set; } = new List<SlottedItem>();
+    public bool HasBottomSide => BottomSideItems.Any();
+    public bool HasItems => TopSideItems.Any() || BottomSideItems.Any();
+    public List<MoldSide> Sides { get; set; }
+    public List<SlottedItem> AllItems => TopSideItems.Concat(BottomSideItems).ToList();
+    public bool IsActive { get; set; }
+}

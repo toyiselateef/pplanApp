@@ -1,6 +1,7 @@
 using System.Collections;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
+using MfgDocs.Api.Data;
 using MfgDocs.Api.Extensions;
 using MfgDocs.Api.Models;
 using Microsoft.Extensions.Options;
@@ -103,19 +104,6 @@ public class WorkOrderRequest5
     public int Priority { get; set; } = 0;
 }
 
-public class StandardMold
-{
-    public string Name { get; set; }
-    public double Width { get; set; }
-    public double Length { get; set; }
-    public string PourCategory { get; set; }
-    public List<SlottedItem> TopSideItems { get; set; } = new List<SlottedItem>();
-    public List<SlottedItem> BottomSideItems { get; set; } = new List<SlottedItem>();
-    public bool HasBottomSide => BottomSideItems.Any();
-    public bool HasItems => TopSideItems.Any() || BottomSideItems.Any();
-    public List<MoldSide> Sides { get; set; }
-    public List<SlottedItem> AllItems => TopSideItems.Concat(BottomSideItems).ToList();
-}
 
 public class MoldSide
 {
@@ -197,17 +185,132 @@ public class PourPlanSummary
 
 public class DailyPouringPlanGenerator
 {
+    private readonly ISharePointListService _sharePointService;
     private readonly PouringPlanConfig _config;
-    private readonly List<StandardMold> _standardMolds;
+    private  List<StandardMold> _standardMolds;
+    //private readonly List<StandardMold> _standardMolds;
     private const double MARGIN_SIZE = 3.0;
 
-    public DailyPouringPlanGenerator(IOptions<PouringPlanConfig> config)
+    public DailyPouringPlanGenerator(IOptions<PouringPlanConfig> config, ISharePointListService sharePointService)
     {
+        _sharePointService = sharePointService;
         _config = config.Value;
-        _standardMolds = InitializeStandardMolds();
+        _standardMolds = Environment.GetEnvironmentVariable("USE_SM") == "true" ? InitializeStandardMolds(): InitializeStandardMoldsDep();
     }
 
-    private List<StandardMold> InitializeStandardMolds()
+private List<StandardMold> _cachedMolds = null;
+private DateTime _lastMoldFetch = DateTime.MinValue;
+private readonly TimeSpan _moldCacheExpiration = TimeSpan.FromHours(24); // Cache for 24 hours
+
+private List<StandardMold> InitializeStandardMolds()
+{
+    // Try to get from cache first
+    if (_cachedMolds != null && DateTime.Now - _lastMoldFetch < _moldCacheExpiration)
+    {
+        return _cachedMolds;
+    }
+
+    // Try to fetch from SharePoint
+    if (_sharePointService != null)
+    {
+        try
+        {
+            var moldTask = _sharePointService.GetStandardMoldsAsync();
+            moldTask.Wait(); // Synchronous wait for compatibility
+            var sharePointMolds = moldTask.Result;
+
+            if (sharePointMolds != null && sharePointMolds.Any())
+            {
+                var molds = sharePointMolds
+                    .Where(m => m.IsActive) // Only use active molds
+                    .Select(m => new StandardMold
+                    {
+                        Name = m.Name,
+                        Width = (double)m.Width,
+                        Length = (double)m.Length,
+                        PourCategory = m.PourCategory ?? "P1",
+                        TopSideItems = new List<SlottedItem>(),
+                        BottomSideItems = new List<SlottedItem>()
+                    })
+                    .ToList();
+
+                if (molds.Any())
+                {
+                    _cachedMolds = molds;
+                    _lastMoldFetch = DateTime.Now;
+                    return molds;
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Failed to fetch molds from SharePoint, using fallback: {ex.Message}");
+            // Continue to fallback
+        }
+    }
+
+    // Fallback to hardcoded molds
+    var fallbackMolds = new List<StandardMold>
+    {
+        new StandardMold { Name = "A", Width = 30, Length = 156, PourCategory = "P2" },
+        new StandardMold { Name = "B", Width = 36, Length = 156, PourCategory = "P3" },
+        new StandardMold { Name = "C", Width = 50, Length = 122, PourCategory = "P1" },
+        new StandardMold { Name = "D", Width = 51.5, Length = 120, PourCategory = "P2" },
+        new StandardMold { Name = "E", Width = 26, Length = 144, PourCategory = "P4" },
+        new StandardMold { Name = "F", Width = 22, Length = 144, PourCategory = "P5" },
+        new StandardMold { Name = "G", Width = 24, Length = 120, PourCategory = "P4" },
+        new StandardMold { Name = "H", Width = 26, Length = 120, PourCategory = "P1" },
+        new StandardMold { Name = "I", Width = 22, Length = 120, PourCategory = "P4" },
+        new StandardMold { Name = "J", Width = 20, Length = 120, PourCategory = "P1" },
+        new StandardMold { Name = "K", Width = 51, Length = 122, PourCategory = "P3" },
+        new StandardMold { Name = "L", Width = 61, Length = 122, PourCategory = "P5" }
+    };
+
+    _cachedMolds = fallbackMolds;
+    _lastMoldFetch = DateTime.Now;
+    return fallbackMolds;
+}
+
+// 4. Add this method to manually refresh molds if needed:
+
+public async Task<bool> RefreshStandardMoldsAsync()
+{
+    if (_sharePointService == null)
+        return false;
+
+    try
+    {
+        var sharePointMolds = await _sharePointService.GetStandardMoldsAsync();
+        
+        if (sharePointMolds != null && sharePointMolds.Any())
+        {
+            _cachedMolds = sharePointMolds
+                .Where(m => m.IsActive)
+                .Select(m => new StandardMold
+                {
+                    Name = m.Name,
+                    Width = (double)m.Width,
+                    Length = (double)m.Length,
+                    PourCategory = m.PourCategory ?? "P1",
+                    TopSideItems = new List<SlottedItem>(),
+                    BottomSideItems = new List<SlottedItem>()
+                })
+                .ToList();
+
+            _lastMoldFetch = DateTime.Now;
+            _standardMolds = _cachedMolds;
+            return true;
+        }
+
+        return false;
+    }
+    catch
+    {
+        return false;
+    }
+}
+    
+    private List<StandardMold> InitializeStandardMoldsDep()
     {
         return new List<StandardMold>
         {

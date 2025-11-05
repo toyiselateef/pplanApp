@@ -41,6 +41,9 @@ public interface ISharePointListService
     Task<List<ListItem>> GetListItemsAsync(string listId);
     Task<bool> UpdateListItemAsync(string listId, string itemId, Dictionary<string, object> fields);
     Task<List> GetListByTitleAsync(string listTitle);
+    
+    //
+    Task<List<StandardMold>> GetStandardMoldsAsync();
 }
 
 public class SharePointListService : ISharePointListService
@@ -51,19 +54,81 @@ public class SharePointListService : ISharePointListService
     private const string ORDERS_LIST = "Orders";
     private const string LOTS_LIST = "Lots";
     private const string WORKORDERS_LIST = "Work Orders";
+    private const string STANDARD_MOLDS_LIST = "Standard Molds";
 
     public SharePointListService(IConfiguration configuration)
     {
         _configuration = configuration;
     }       
+//>>>>>>
+/// <summary>
+/// Gets standard mold definitions from SharePoint list
+/// </summary>
+public async Task<List<StandardMold>> GetStandardMoldsAsync()
+{
+    try
+    {
+        var standardMoldsList = await GetListByTitleAsync(STANDARD_MOLDS_LIST);
+        
+        if (standardMoldsList == null)
+        {
+            // Return empty list if list doesn't exist - fallback will be used
+            return new List<StandardMold>();
+        }
 
+        var moldItems = await _graphClient.Sites[_siteId]
+            .Lists[standardMoldsList.Id]
+            .Items
+            .GetAsync(config =>
+            {
+                config.QueryParameters.Expand = new[] { "fields" };
+                // Optionally filter for active molds only if you have an IsActive field
+                // config.QueryParameters.Filter = "fields/IsActive eq true";
+            });
+
+        var molds = new List<StandardMold>();
+
+        foreach (var item in moldItems.Value)
+        {
+            var fields = item.Fields.AdditionalData;
+            
+            var mold = new StandardMold
+            {
+                Name = GetFieldValue<string>(fields, "Name") ?? GetFieldValue<string>(fields, "Name"),
+                Width = (double)GetFieldValue<decimal>(fields, "Width"),
+                Length = (double)GetFieldValue<decimal>(fields, "Length"),
+                PourCategory = GetFieldValue<string>(fields, "PourCategory") ?? GetFieldValue<string>(fields, "Pour_x0020_Category"),
+                IsActive = GetFieldValue<bool>(fields, "IsActive") // Defaults to false if field doesn't exist
+            };
+
+            // Only add valid molds (with name and positive dimensions)
+            if (!string.IsNullOrEmpty(mold.Name) && mold.Width > 0 && mold.Length > 0)
+            {
+                molds.Add(mold);
+            }
+        }
+
+        return molds.OrderBy(m => m.Name).ToList();
+    }
+    catch (Exception ex)
+    {
+        // Log the error but don't throw - allow fallback to hardcoded molds
+        Console.WriteLine($"Error fetching standard molds from SharePoint: {ex.Message}");
+        return new List<StandardMold>();
+    }
+}
+//<<<<<<<
     //public SharePointListService(string tenantId, string clientId, string clientSecret, string siteUrl)
     public SharePointListService()
     {
-        string tenantId = _configuration["Sharepoint:TENANT_ID"];
-        string clientId = _configuration["Sharepoint:CLIENT_ID"];
+        string tenantId = Environment.GetEnvironmentVariable("TENANT_ID_");
+        string clientId = Environment.GetEnvironmentVariable("CLIENT_ID_");
         string client_ = Environment.GetEnvironmentVariable("CLIENT_");
-        string siteUrl = _configuration["Sharepoint:SHAREPOINT_URL2"];
+        string siteUrl = Environment.GetEnvironmentVariable("SHAREPOINT_URL2_");
+  // string tenantId = _configuration["Sharepoint:TENANT_ID"];
+  //       string clientId = _configuration["Sharepoint:CLIENT_ID"];
+  //       string client_ = Environment.GetEnvironmentVariable("CLIENT_");
+  //       string siteUrl = _configuration["Sharepoint:SHAREPOINT_URL2"];
 
         var credential = new ClientSecretCredential(tenantId, clientId, client_);
 

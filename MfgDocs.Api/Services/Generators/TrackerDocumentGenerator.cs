@@ -1,3 +1,4 @@
+using MfgDocs.Api.Models;
 using MfgDocs.Api.Services.Others;
 
 namespace MfgDocs.Api.Services.Generators;
