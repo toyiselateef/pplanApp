@@ -269,7 +269,8 @@ app.MapPost("/api/pourplan/generate", async ([FromServices] PourPlanOrchestratio
         request.StartDate,
         request.Color,
         request.PourNumber ?? "1",
-        request.AutoUpdateSharePoint);
+        request.AutoUpdateSharePoint,
+        request.saveHistory);
 
     if (!result.Success)
         return Results.BadRequest(new { result.Message });
@@ -570,6 +571,7 @@ public class PourPlanRequestNew
     public string Color { get; set; } = "Standard";
     public string PourNumber { get; set; } = "1";
     public bool AutoUpdateSharePoint { get; set; } = true;
+    public bool saveHistory { get; set; } = true;
 }
 
 public class SharePointUpdateRequest

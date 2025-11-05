@@ -70,6 +70,20 @@ public static class BagCalculationRules
 
     public static int CalculateRequiredBags(float totalArea)
     {
+        var prevKey = 0;
+        foreach (var rule in BagToSquareInch.OrderByDescending(x => x.Key))
+        {
+            if (totalArea > rule.Value)
+            {
+                //return rule.Key;
+                return prevKey;
+            }
+
+            prevKey = rule.Key;
+        }
+        return totalArea > 0 ? 1 : 0;
+    } public static int CalculateRequiredBag(float totalArea)
+    {
         foreach (var rule in BagToSquareInch.OrderByDescending(x => x.Key))
         {
             if (totalArea >= rule.Value)

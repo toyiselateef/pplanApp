@@ -438,7 +438,8 @@ public async Task<List<WorkOrderRequest4>> GetWorkOrdersByWorkIdsAsync(List<Work
                 {
                     await UpdateListItemAsync(workOrdersList.Id, workOrderItem.Id, new Dictionary<string, object>
                     {
-                        { "IsPoured", true }
+                        { "IsPoured", true },
+                        {"Status", "To be Poured"}
                     });
                 }
             }
