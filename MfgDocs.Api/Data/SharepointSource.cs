@@ -56,10 +56,10 @@ public class SharePointListService : ISharePointListService
     private const string WORKORDERS_LIST = "Work Orders";
     private const string STANDARD_MOLDS_LIST = "Standard Molds";
 
-    public SharePointListService(IConfiguration configuration)
-    {
-        _configuration = configuration;
-    }       
+  //  public SharePointListService(IConfiguration configuration)
+    //{
+      //  _configuration = configuration;
+    //}       
 //>>>>>>
 /// <summary>
 /// Gets standard mold definitions from SharePoint list
