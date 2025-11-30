@@ -21,6 +21,7 @@ public static class FontInstaller
             string targetPath = Path.Combine(targetDir, Path.GetFileName(fontFile));
             Console.WriteLine($"path targetted::::\n\n" + JsonConvert.SerializeObject(targetPath));   
             File.Copy(fontFile, targetPath, true);
+            
         }
 
         try
