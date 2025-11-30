@@ -1,0 +1,53 @@
+name: Deploy .NET 8 API to Azure App Service (Admin Credentials)
+
+on:
+  push:
+    branches:
+      - main # Or your main branch name
+
+env:
+  AZURE_WEBAPP_NAME: mfgdocs-api-app           # ✅ Verify this matches your App Service name
+  ACR_LOGIN_SERVER: ${{ secrets.ACR_LOGIN_SERVER }} # ✅ This MUST contain mfgrecastregistry-fhccgrb7bcash9dm.azurecr.io
+  IMAGE_NAME: mfgdocs-api
+  IMAGE_TAG: latest
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+      
+      # 1. ACR Docker Login using Admin credentials
+      # This authenticates Docker with your ACR so it can PUSH the image.
+      - name: ACR Docker Login
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.ACR_LOGIN_SERVER }}
+          username: ${{ secrets.ACR_USERNAME }} # Needs to be the ACR Admin Username
+          password: ${{ secrets.ACR_PASSWORD }} # Needs to be the ACR Admin Password
+      
+      # 2. Build and Push Docker image to ACR
+      # This uses the image name: ${{ env.ACR_LOGIN_SERVER }}/mfgdocs-api:latest
+      - name: Build and Push Docker image to ACR
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ env.ACR_LOGIN_SERVER }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+      
+      # 3. Azure Login for App Service Deployment
+      # This uses the Service Principal (AZURE_CREDENTIALS) to authorize deployment to Azure.
+      - name: Azure Login (for App Service Deployment)
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      # 4. Deploy to Azure WebApp
+      # This command tells the App Service to pull the image it needs.
+      - name: Deploy to Azure WebApp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          # The images parameter tells the App Service which image to pull and triggers the pull
+          images: '${{ env.ACR_LOGIN_SERVER }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}'
