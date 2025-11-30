@@ -16,6 +16,7 @@ namespace MfgDocs.Api.Extensions;
             table.DefaultCell.BorderColor = BaseColor.BLACK;
 
             return table;
+            
         }
 
         public static void AddTableBorder(this PdfPTable table, BaseColor borderColor, float borderWidth = 1f)
