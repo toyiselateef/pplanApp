@@ -15,14 +15,7 @@ public  static class Helper
         cell.HorizontalAlignment = Element.ALIGN_CENTER;
         return cell;
     }
-    public static PdfPCell CreateCell2(string text, BaseColor backgroundColor)
-    {
-        var cell = new PdfPCell(new Phrase(text, FontFactory.GetFont(FontFactory.HELVETICA, 8)));
-        cell.BackgroundColor = backgroundColor;
-        cell.Padding = 3;
-        cell.HorizontalAlignment = Element.ALIGN_CENTER;
-        return cell;
-    }
+   
     public static PdfPCell CreateInfoCell(string label, string value)
     {
         var table = new PdfPTable(1);
